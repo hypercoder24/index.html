@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ICA Manual">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#C8102E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%2306060a'/%3E%3Ccircle cx='96' cy='96' r='70' fill='none' stroke='%23C8102E' stroke-width='8'/%3E%3Ccircle cx='96' cy='96' r='12' fill='%23C8102E'/%3E%3Cline x1='96' y1='26' x2='96' y2='56' stroke='%23C8102E' stroke-width='4'/%3E%3Cline x1='96' y1='136' x2='96' y2='166' stroke='%23C8102E' stroke-width='4'/%3E%3Cline x1='26' y1='96' x2='56' y2='96' stroke='%23C8102E' stroke-width='4'/%3E%3Cline x1='136' y1='96' x2='166' y2='96' stroke='%23C8102E' stroke-width='4'/%3E%3C/svg%3E">
+<title>ICA Field Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Share+Tech+Mono&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --r:#C8102E;--r2:#7a0a1b;--r3:#ff3355;--r4:rgba(200,16,46,0.12);
+  --g:#c8a910;--g2:rgba(200,169,16,0.12);
+  --bg:#06060a;--bg2:#0d0d12;--bg3:#141418;--bg4:#1c1c22;--bg5:#242428;
+  --t:#e8e8f0;--t2:#9090a0;--t3:#505060;--t4:#30303a;
+  --bd:#1e1e26;--bd2:#2a2a36;
+  --H:'Barlow Condensed',sans-serif;--B:'Barlow',sans-serif;--M:'Share Tech Mono',monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--t);font-family:var(--B);overflow:hidden;position:relative}
+body{display:flex;flex-direction:column;max-width:480px;margin:0 auto}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px);pointer-events:none;z-index:1000}
+
+/* INSTALL BANNER */
+#install-banner{background:linear-gradient(90deg,var(--r2),#1a0a20);border-bottom:1px solid var(--r2);padding:8px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#install-banner.hidden{display:none}
+.ib-text{flex:1;font-family:var(--M);font-size:10px;color:var(--t2);line-height:1.4}
+.ib-text b{color:var(--t)}
+.ib-btn{background:var(--r);color:var(--t);border:none;padding:5px 10px;font-family:var(--M);font-size:10px;border-radius:2px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.ib-close{background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
+
+/* HEADER */
+#hdr{background:var(--bg);border-bottom:1px solid var(--bd);padding:9px 12px 7px;flex-shrink:0;z-index:100}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.logo{display:flex;align-items:baseline;gap:7px;flex:1}
+.logo-ica{font-family:var(--H);font-weight:900;font-size:24px;letter-spacing:4px;color:var(--r);line-height:1}
+.logo-rest{font-family:var(--H);font-weight:300;font-size:13px;letter-spacing:3px;color:var(--t2);text-transform:uppercase}
+.hdr-actions{display:flex;align-items:center;gap:6px}
+.hdr-btn{background:none;border:1px solid var(--bd);color:var(--t2);width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.hdr-btn:active,.hdr-btn.on{background:rgba(200,16,46,0.1);border-color:var(--r);color:var(--r)}
+.hdr-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--r);box-shadow:0 0 6px var(--r);animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* SEARCH OVERLAY */
+#search-overlay{position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;max-width:480px;margin:0 auto}
+#search-overlay.open{display:flex}
+.so-head{padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.so-input-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--bd);border-radius:3px;padding:0 10px}
+.so-input-wrap svg{width:14px;height:14px;fill:none;stroke:var(--t3);stroke-width:2;stroke-linecap:round;flex-shrink:0}
+#so-input{flex:1;background:none;border:none;color:var(--t);font-family:var(--M);font-size:13px;padding:9px 0;outline:none}
+#so-input::placeholder{color:var(--t4);font-size:11px}
+.so-cancel{background:none;border:none;color:var(--r);font-family:var(--M);font-size:11px;cursor:pointer;padding:4px 2px;white-space:nowrap}
+.so-results{flex:1;overflow-y:auto;padding:8px 12px}
+.so-results::-webkit-scrollbar{width:2px}
+.so-results::-webkit-scrollbar-thumb{background:var(--t4)}
+.so-group-label{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:2px;padding:8px 0 4px;text-transform:uppercase}
+.so-item{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;padding:9px 11px;margin-bottom:5px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:border-color .15s}
+.so-item:active{transform:scale(0.98)}
+.so-item:hover{border-color:var(--bd2)}
+.so-icon{width:28px;height:28px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.so-icon.mission{background:rgba(200,16,46,0.12);color:var(--r)}
+.so-icon.unlock{background:rgba(200,169,16,0.12);color:var(--g)}
+.so-icon.escunlock{background:rgba(112,144,204,0.12);color:#7090cc}
+.so-icon.target{background:rgba(200,16,46,0.1);color:var(--r)}
+.so-icon.elusive{background:rgba(80,100,80,0.2);color:#70aa70}
+.so-icon.suit{background:rgba(130,80,200,0.1);color:#a060d0}
+.so-icon.tactic{background:rgba(100,150,220,0.1);color:#7090cc}
+.so-text{flex:1;min-width:0}
+.so-name{font-family:var(--H);font-size:15px;font-weight:700;letter-spacing:.5px;line-height:1.2}
+.so-sub{font-family:var(--M);font-size:9px;color:var(--t2);margin-top:2px;letter-spacing:.3px;line-height:1.4}
+.so-tag{font-family:var(--M);font-size:8px;padding:1px 5px;border-radius:2px;display:inline-block;margin-top:3px}
+.so-tag.mastery{background:rgba(200,169,16,0.12);color:var(--g);border:1px solid rgba(200,169,16,0.3)}
+.so-tag.escalation{background:rgba(112,144,204,0.12);color:#7090cc;border:1px solid rgba(112,144,204,0.3)}
+.so-tag.suit{background:rgba(130,80,200,0.1);color:#a060d0;border:1px solid rgba(130,80,200,0.3)}
+.so-empty{text-align:center;padding:40px 20px;color:var(--t3);font-family:var(--M);font-size:11px;line-height:2}
+.so-hint{padding:12px 0;display:flex;flex-direction:column;gap:4px}
+.so-hint-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg3);border-radius:3px;border:1px solid var(--bd)}
+.so-hint-key{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:1px;min-width:90px}
+.so-hint-val{font-size:11px;color:var(--t2)}
+
+/* GAME TABS */
+.gtabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.gtab{flex:1;padding:8px 4px;text-align:center;font-family:var(--H);font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;transition:all .2s;position:relative}
+.gtab.on{color:var(--t);border-bottom-color:var(--r)}
+
+/* CONTENT & VIEWS */
+#content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#content::-webkit-scrollbar{width:2px}
+#content::-webkit-scrollbar-thumb{background:var(--t4)}
+.view{display:none}.view.on{display:block}
+
+/* SECTION LABEL */
+.sl{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sl::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* MISSION CARDS */
+.mg{padding:10px}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;margin-bottom:8px;cursor:pointer;overflow:hidden;transition:border-color .2s,transform .1s;position:relative}
+.mc:active{transform:scale(0.98)}
+.mc:hover{border-color:var(--bd2)}
+.mc-bar{height:2px;background:linear-gradient(90deg,var(--r),var(--r2))}
+.mc-in{padding:10px 12px 8px}
+.mc-loc{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:2px;margin-bottom:2px}
+.mc-title{font-family:var(--H);font-size:21px;font-weight:700;letter-spacing:1px;line-height:1;margin-bottom:5px}
+.mc-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.chip{font-family:var(--M);font-size:10px;color:var(--t2);background:var(--bg3);border:1px solid var(--bd);padding:2px 7px;border-radius:2px}
+.chip.bonus{border-color:var(--g);color:var(--g)}
+.mc-foot{display:flex;justify-content:space-between;align-items:center}
+.mc-sub{font-family:var(--M);font-size:9px;color:var(--t4);letter-spacing:1px}
+.mc-arr{color:var(--r);font-size:18px;line-height:1}
+/* Completion badges on cards */
+.mc-badges{position:absolute;top:8px;right:10px;display:flex;gap:3px}
+.cb{font-family:var(--M);font-size:8px;padding:1px 5px;border-radius:2px;letter-spacing:.5px}
+.cb.sa{background:rgba(200,169,16,0.15);color:var(--g);border:1px solid rgba(200,169,16,0.35)}
+.cb.so{background:rgba(100,150,220,0.15);color:#7090cc;border:1px solid rgba(100,150,220,0.35)}
+.cb.saso{background:rgba(200,16,46,0.15);color:var(--r);border:1px solid var(--r2)}
+
+/* DETAIL */
+#det{position:fixed;top:0;left:50%;transform:translateX(-50%) translateX(100vw);width:100%;max-width:480px;height:100%;background:var(--bg);z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#det.open{transform:translateX(-50%) translateX(0)}
+#det::-webkit-scrollbar{width:2px}
+#det::-webkit-scrollbar-thumb{background:var(--t4)}
+.dh{padding:11px 12px 9px;background:var(--bg2);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:8px}
+.dh-back{background:none;border:1px solid var(--bd2);color:var(--t2);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:2px;cursor:pointer;font-size:18px;flex-shrink:0}
+.dh-back:active{background:var(--bg3)}
+.dh-info{flex:1;min-width:0}
+.dh-loc{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:2px}
+.dh-title{font-family:var(--H);font-size:20px;font-weight:700;letter-spacing:1px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.det-tabs{display:flex;background:var(--bg3);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
+.det-tabs::-webkit-scrollbar{display:none}
+.det-tab{flex-shrink:0;padding:8px 10px;text-align:center;font-family:var(--M);font-size:9px;letter-spacing:1px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.det-tab.on{color:var(--r);border-bottom-color:var(--r)}
+.det-pane{display:none;padding:12px}
+.det-pane.on{display:block}
+
+/* TARGET CARDS */
+.tc{background:var(--bg3);border:1px solid var(--bd);border-radius:3px;margin-bottom:8px;overflow:hidden}
+.tc-top{padding:10px 12px 8px}
+.tc-code{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:1.5px;margin-bottom:2px}
+.tc-name{font-family:var(--H);font-size:18px;font-weight:700;letter-spacing:.5px;margin-bottom:4px}
+.tc-desc{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:6px}
+.tc-methods{display:flex;flex-wrap:wrap;gap:4px}
+.mt{font-family:var(--M);font-size:10px;padding:3px 8px;border-radius:2px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:3px}
+.mt::after{content:'⌖';font-size:8px;opacity:.5}
+.mt.cat-poison{background:rgba(120,180,50,0.1);border:1px solid rgba(120,180,50,0.3);color:#8bb840}
+.mt.cat-explosive{background:rgba(220,100,30,0.1);border:1px solid rgba(220,100,30,0.3);color:#d46428}
+.mt.cat-electric{background:rgba(220,190,30,0.1);border:1px solid rgba(220,190,30,0.3);color:#c8be20}
+.mt.cat-stealth{background:rgba(100,150,220,0.1);border:1px solid rgba(100,150,220,0.3);color:#7090cc}
+.mt.cat-push{background:rgba(180,80,200,0.1);border:1px solid rgba(180,80,200,0.3);color:#b060c8}
+.mt.cat-sniper{background:rgba(200,16,46,0.1);border:1px solid rgba(200,16,46,0.3);color:var(--r)}
+.mt.cat-melee{background:rgba(160,100,60,0.1);border:1px solid rgba(160,100,60,0.3);color:#b07848}
+.mt.cat-accident{background:rgba(60,180,150,0.1);border:1px solid rgba(60,180,150,0.3);color:#40b898}
+.mt.cat-unique{background:rgba(200,169,16,0.15);border:1px solid rgba(200,169,16,0.4);color:var(--g)}
+.mt:active{transform:scale(0.95)}
+
+/* STORY / START / TIP */
+.si{border-left:2px solid var(--r2);padding:5px 9px;margin-bottom:5px;background:var(--bg3)}
+.si-n{font-family:var(--H);font-size:13px;font-weight:600;letter-spacing:.5px;margin-bottom:1px}
+.si-d{font-size:11px;color:var(--t2);line-height:1.4}
+.start-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.sc{font-family:var(--M);font-size:10px;background:var(--bg3);border:1px solid var(--bd);color:var(--t);padding:3px 9px;border-radius:2px}
+.sc.locked{border-color:var(--t4);color:var(--t3)}
+.sc.locked::before{content:'★ ';font-size:8px;color:var(--g)}
+.tip{padding:5px 0;border-bottom:1px solid var(--bd);font-size:12px;color:var(--t2);line-height:1.5;display:flex;gap:7px}
+.tip:last-child{border:none}
+.tip::before{content:'›';color:var(--r);flex-shrink:0;font-size:15px;line-height:1.4}
+
+/* UNLOCKS */
+.ul-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.ui{background:var(--bg3);border:1px solid var(--bd);border-radius:2px;padding:6px 8px;display:flex;flex-direction:column;gap:1px}
+.ui-lvl{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:1px}
+.ui-name{font-size:11px;color:var(--t);line-height:1.2}
+.ui-type{font-family:var(--M);font-size:9px;color:var(--t3)}
+
+/* ESCALATIONS */
+.esc{background:var(--bg3);border:1px solid var(--bd);border-radius:3px;margin-bottom:6px;overflow:hidden}
+.esc-head{padding:8px 11px;display:flex;justify-content:space-between;align-items:center}
+.esc-name{font-family:var(--H);font-size:14px;font-weight:700;letter-spacing:.5px}
+.esc-levels{display:flex;gap:3px}
+.esc-lv{width:14px;height:5px;background:var(--bg5);border-radius:1px}
+.esc-body{padding:3px 11px 8px;display:flex;align-items:center;gap:8px}
+.esc-icon{width:22px;height:22px;background:rgba(112,144,204,0.1);border:1px solid rgba(112,144,204,0.25);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.esc-reward{font-size:12px;color:var(--t2)}
+.esc-reward b{color:var(--t);font-weight:500}
+
+/* PROGRESS/TRACKER */
+.prog-mission{background:var(--bg3);border:1px solid var(--bd);border-radius:3px;padding:12px;margin-bottom:10px}
+.prog-title{font-family:var(--H);font-size:16px;font-weight:700;letter-spacing:.5px;margin-bottom:8px}
+.prog-badges{display:flex;gap:6px;margin-bottom:10px}
+.prog-badge{flex:1;padding:8px;background:var(--bg4);border:1px solid var(--bd);border-radius:3px;cursor:pointer;text-align:center;transition:all .2s}
+.prog-badge.achieved{border-color:var(--r);background:rgba(200,16,46,0.08)}
+.prog-badge.achieved .pb-label{color:var(--r)}
+.pb-icon{font-size:18px;display:block;margin-bottom:3px}
+.pb-label{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:1px;display:block}
+.prog-mastery-row{display:flex;align-items:center;gap:8px}
+.prog-mastery-label{font-family:var(--M);font-size:9px;color:var(--t2);flex:1}
+.prog-mastery-val{font-family:var(--M);font-size:13px;color:var(--g);min-width:28px;text-align:center}
+.prog-mastery-bar{flex:2;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden}
+.prog-mastery-fill{height:100%;background:var(--g);border-radius:2px;transition:width .3s}
+.prog-mastery-btns{display:flex;gap:4px}
+.pmb{background:var(--bg4);border:1px solid var(--bd);color:var(--t2);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.pmb:active{background:var(--bg5)}
+.prog-notes-label{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:1px;margin:10px 0 5px}
+.prog-notes{width:100%;background:var(--bg4);border:1px solid var(--bd);color:var(--t);padding:8px 10px;font-family:var(--B);font-size:12px;border-radius:3px;outline:none;resize:none;min-height:80px;line-height:1.5}
+.prog-notes:focus{border-color:var(--r2)}
+.prog-save{width:100%;padding:7px;background:rgba(200,16,46,0.1);border:1px solid var(--r2);color:var(--r);font-family:var(--M);font-size:10px;border-radius:2px;cursor:pointer;margin-top:6px;letter-spacing:1px}
+.prog-save:active{background:rgba(200,16,46,0.2)}
+
+/* BERLIN AGENTS */
+.agent-card{background:var(--bg3);border:1px solid var(--bd);border-radius:3px;padding:8px 10px;margin-bottom:5px;display:flex;align-items:flex-start;gap:8px}
+.agent-num{font-family:var(--M);font-size:9px;color:var(--r);min-width:24px;margin-top:2px}
+.agent-info{flex:1}
+.agent-name{font-family:var(--H);font-size:14px;font-weight:700;letter-spacing:.5px}
+.agent-disguise{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:.5px}
+.agent-loc{font-size:11px;color:var(--t2);line-height:1.4;margin-top:2px}
+
+/* SPAWN SHEET */
+#spawn-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
+#spawn-bg.open{opacity:1;pointer-events:all}
+#spawn-sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;background:var(--bg2);border-top:1px solid var(--bd);z-index:501;transition:transform .3s cubic-bezier(.4,0,.2,1);border-radius:8px 8px 0 0;max-height:75vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#spawn-sheet.open{transform:translateX(-50%) translateY(0)}
+#spawn-sheet::-webkit-scrollbar{width:2px}
+#spawn-sheet::-webkit-scrollbar-thumb{background:var(--t4)}
+.ss-handle{width:36px;height:3px;background:var(--t4);border-radius:2px;margin:10px auto 4px}
+.ss-head{padding:8px 14px;border-bottom:1px solid var(--bd)}
+.ss-title{font-family:var(--H);font-size:19px;font-weight:700;letter-spacing:1px}
+.ss-sub{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:1px;margin-top:1px}
+.ss-body{padding:10px 14px}
+.sp-group{margin-bottom:12px}
+.sp-item-name{font-family:var(--M);font-size:10px;letter-spacing:.5px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.sp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sp-dot.emetic{background:#8bb840}.sp-dot.lethal{background:var(--r)}.sp-dot.pill{background:#c8be20}
+.sp-dot.electric{background:#c8be20}.sp-dot.explosive{background:#d46428}.sp-dot.wire{background:#7090cc}
+.sp-dot.unique{background:var(--g)}.sp-dot.vantage{background:var(--r)}
+.sp-loc{display:flex;align-items:flex-start;gap:8px;padding:4px 0;border-bottom:1px solid var(--bd);font-size:12px;color:var(--t2);line-height:1.4}
+.sp-loc:last-child{border:none}
+.sp-loc::before{content:'◈';font-size:9px;color:var(--t3);flex-shrink:0;margin-top:3px}
+.sp-floor{font-family:var(--M);font-size:9px;color:var(--t3);white-space:nowrap;flex-shrink:0;min-width:30px}
+.ss-none{font-family:var(--M);font-size:11px;color:var(--t3);text-align:center;padding:20px;line-height:1.6}
+
+/* ELUSIVE */
+.et-section{padding:10px}
+.et-info{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.6}
+.et-tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:8px}
+.et-tab{flex:1;padding:8px 4px;text-align:center;font-family:var(--M);font-size:9px;letter-spacing:1px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;transition:all .2s}
+.et-tab.on{color:var(--r);border-bottom-color:var(--r)}
+.et-pane{display:none}.et-pane.on{display:block}
+.etc{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;margin-bottom:6px;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.etc:active{transform:scale(0.98)}
+.etc-bar{height:2px}
+.etc-bar.live,.etc-bar.react{background:var(--r)}.etc-bar.inactive{background:var(--t4)}.etc-bar.arcade{background:#7090cc}
+.etc-body{padding:8px 12px}
+.etc-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.etc-name{font-family:var(--H);font-size:17px;font-weight:700;letter-spacing:.5px}
+.etc-badges{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.etc-badge{font-family:var(--M);font-size:8px;padding:2px 6px;border-radius:2px;white-space:nowrap}
+.etc-badge.inactive{background:var(--bg5);color:var(--t3);border:1px solid var(--t4)}
+.etc-badge.live,.etc-badge.react{background:rgba(200,16,46,0.15);color:var(--r);border:1px solid var(--r2)}
+.etc-badge.arcade{background:rgba(112,144,204,0.12);color:#7090cc;border:1px solid rgba(112,144,204,0.3)}
+.etc-badge.celeb{background:rgba(200,169,16,0.15);color:var(--g);border:1px solid rgba(200,169,16,0.4)}
+.etc-row2{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap}
+.etc-loc{font-family:var(--M);font-size:9px;color:var(--t3)}
+.etc-detail{margin-top:6px;padding-top:6px;border-top:1px solid var(--bd);display:none}
+.etc-detail.open{display:block}
+.etc-desc{font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:6px}
+.etc-strat-label{font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:1px;margin-bottom:3px}
+.etc-strat{font-size:11px;color:var(--t2);line-height:1.5}
+.arc-levels{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.arc-lv{background:var(--bg3);border:1px solid var(--bd);border-radius:2px;padding:5px 8px}
+.arc-lv-hd{font-family:var(--M);font-size:9px;color:#7090cc;margin-bottom:2px;display:flex;justify-content:space-between;gap:8px}
+.arc-lv-hd span:last-child{color:var(--g);text-align:right}
+.arc-lv-comps{font-size:11px;color:var(--t2);line-height:1.4}
+
+/* DATABASE */
+.db-head{padding:10px 12px;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.db-head input{width:100%;background:var(--bg3);border:1px solid var(--bd);color:var(--t);padding:8px 10px;border-radius:3px;font-family:var(--M);font-size:12px;outline:none}
+.db-head input:focus{border-color:var(--r)}
+.db-head input::placeholder{color:var(--t3)}
+.db-filters{display:flex;gap:5px;padding:7px 10px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--bd)}
+.db-filters::-webkit-scrollbar{display:none}
+.fc{font-family:var(--M);font-size:9px;background:var(--bg3);border:1px solid var(--bd);color:var(--t3);padding:3px 9px;border-radius:2px;white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+.fc.on{background:rgba(200,16,46,0.1);border-color:var(--r);color:var(--r)}
+.db-list{padding:8px 10px}
+.dbi{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;padding:9px 11px;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
+.dbi:active{transform:scale(0.98)}
+.dbi-name{font-family:var(--H);font-size:16px;font-weight:700;letter-spacing:.5px}
+.dbi-sub{font-family:var(--M);font-size:9px;color:var(--t2);margin-top:2px;letter-spacing:.5px}
+.dbi-methods{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.dbi-m{font-family:var(--M);font-size:9px;background:var(--bg3);border:1px solid var(--bd);color:var(--t3);padding:1px 6px;border-radius:2px}
+
+/* TACTICS */
+.tac-section{padding:10px}
+.tac-card{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;margin-bottom:8px;overflow:hidden}
+.tac-hd{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.tac-ht{font-family:var(--H);font-size:15px;font-weight:700;letter-spacing:.5px}
+.tac-tog{color:var(--r);font-size:14px;transition:transform .2s;flex-shrink:0}
+.tac-tog.open{transform:rotate(90deg)}
+.tac-body{padding:6px 12px 10px;display:none}
+.tac-body.open{display:block}
+
+/* NAV */
+#nav{background:var(--bg2);border-top:1px solid var(--bd);display:flex;flex-shrink:0;z-index:100;position:relative}
+.nb{flex:1;padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--t3);font-family:var(--M);font-size:9px;letter-spacing:1px;transition:color .2s;position:relative}
+.nb.on{color:var(--r)}
+.nb.on::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:var(--r)}
+.nbi{width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+.nbi svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* SUITS */
+.suit-head{padding:10px 12px 8px;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.suit-progress-bar{height:3px;background:var(--bg4);border-radius:2px;margin-bottom:8px;overflow:hidden}
+.suit-progress-fill{height:100%;background:linear-gradient(90deg,var(--r),#8a0018);border-radius:2px;transition:width .4s ease}
+.suit-counts{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.suit-count-main{font-family:var(--H);font-size:26px;font-weight:700;color:var(--r);line-height:1}
+.suit-count-main span{font-size:14px;color:var(--t3);font-weight:300}
+.suit-count-cats{display:flex;gap:10px}
+.scc{font-family:var(--M);font-size:9px;color:var(--t3);letter-spacing:.5px}
+.scc b{color:var(--t2)}
+.suit-filters{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:2px 0 4px}
+.suit-filters::-webkit-scrollbar{display:none}
+.suit-list{padding:8px 12px}
+.suit-item{background:var(--bg2);border:1px solid var(--bd);border-radius:3px;padding:10px 12px;margin-bottom:6px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:border-color .2s,background .2s}
+.suit-item.owned{border-color:var(--r2);background:rgba(200,16,46,0.05)}
+.suit-item:active{transform:scale(0.98)}
+.suit-check{width:20px;height:20px;border:1.5px solid var(--t4);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.suit-item.owned .suit-check{background:var(--r);border-color:var(--r)}
+.suit-tick{color:#fff;font-size:11px;opacity:0;transform:scale(0);transition:all .2s}
+.suit-item.owned .suit-tick{opacity:1;transform:scale(1)}
+.suit-info{flex:1;min-width:0}
+.suit-name{font-family:var(--H);font-size:16px;font-weight:700;letter-spacing:.5px;line-height:1.2}
+.suit-item.owned .suit-name{color:var(--t)}
+.suit-how{font-size:11px;color:var(--t2);line-height:1.5;margin-top:2px}
+.suit-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.stag{font-family:var(--M);font-size:8px;padding:1px 5px;border-radius:2px;letter-spacing:.5px}
+.stag.default{background:rgba(100,150,220,0.1);color:#7090cc;border:1px solid rgba(100,150,220,0.3)}
+.stag.mastery{background:rgba(200,169,16,0.1);color:var(--g);border:1px solid rgba(200,169,16,0.3)}
+.stag.elusive{background:rgba(200,16,46,0.1);color:var(--r);border:1px solid var(--r2)}
+.stag.arcade{background:rgba(112,144,204,0.12);color:#7090cc;border:1px solid rgba(112,144,204,0.3)}
+.stag.escalation{background:rgba(130,80,200,0.1);color:#a060d0;border:1px solid rgba(130,80,200,0.3)}
+.stag.special{background:rgba(60,180,150,0.1);color:#40b898;border:1px solid rgba(60,180,150,0.3)}
+.stag.freelancer{background:rgba(200,169,16,0.15);color:var(--g);border:1px solid rgba(200,169,16,0.4)}
+
+/* MISC */
+.empty{text-align:center;padding:36px 20px;color:var(--t3);font-family:var(--M);font-size:11px;line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- INSTALL BANNER -->
+<div id="install-banner" class="hidden">
+  <div class="ib-text"><b>ICA Field Manual</b><br>Install as app for offline access</div>
+  <button class="ib-btn" id="install-btn">Install</button>
+  <button class="ib-close" onclick="dismissBanner()">✕</button>
+</div>
+
+<!-- HEADER -->
+<div id="hdr">
+  <div class="hdr-row">
+    <div class="logo">
+      <span class="logo-ica">ICA</span>
+      <span class="logo-rest">Field Manual</span>
+    </div>
+    <div class="hdr-actions">
+      <div class="status-dot"></div>
+      <button class="hdr-btn" onclick="openSearch()" title="Search unlocks, targets, maps">
+        <svg viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay">
+  <div class="so-head">
+    <div class="so-input-wrap">
+      <svg viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+      <input type="text" id="so-input" placeholder="Search unlocks, targets, maps, items..." oninput="runSearch()" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <button class="so-cancel" onclick="closeSearch()">Cancel</button>
+  </div>
+  <div class="so-results" id="so-results">
+    <div class="so-hint">
+      <div class="so-hint-row"><span class="so-hint-key">Silverballer</span><span class="so-hint-val">Find the unlock location</span></div>
+      <div class="so-hint-row"><span class="so-hint-key">Paris</span><span class="so-hint-val">Browse mission + all unlocks</span></div>
+      <div class="so-hint-row"><span class="so-hint-key">Electrocution</span><span class="so-hint-val">Find maps + spawn locations</span></div>
+      <div class="so-hint-row"><span class="so-hint-key">Sean Bean</span><span class="so-hint-val">Find elusive target info</span></div>
+      <div class="so-hint-row"><span class="so-hint-key">Sniper</span><span class="so-hint-val">All sniper rifles + where to get</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+  <div class="view on" id="view-missions">
+    <div class="gtabs">
+      <div class="gtab on" onclick="setGame('H1',this)">HITMAN 1</div>
+      <div class="gtab" onclick="setGame('H2',this)">HITMAN 2</div>
+      <div class="gtab" onclick="setGame('H3',this)">HITMAN 3</div>
+    </div>
+    <div class="mg" id="mc-list"></div>
+  </div>
+  <div class="view" id="view-elusive">
+    <div class="et-section">
+      <div class="et-info">Elusive Targets are one-attempt contracts. Fail and they're gone unless reactivated. Complete 5 for the first suit reward, then every 5 after. The <b style="color:#7090cc">Arcade</b> offers permanent reruns with escalating complications.</div>
+      <div class="et-tabs">
+        <div class="et-tab on" onclick="setETab('live',this)">LIVE / REACT</div>
+        <div class="et-tab" onclick="setETab('arcade',this)">ET ARCADE</div>
+        <div class="et-tab" onclick="setETab('inactive',this)">INACTIVE</div>
+      </div>
+      <div class="et-pane on" id="etp-live"></div>
+      <div class="et-pane" id="etp-arcade"></div>
+      <div class="et-pane" id="etp-inactive"></div>
+    </div>
+  </div>
+  <div class="view" id="view-db">
+    <div class="db-head"><input type="text" placeholder="SEARCH TARGETS..." id="dbi" oninput="filterDB()"></div>
+    <div class="db-filters" id="dbf"></div>
+    <div class="db-list" id="dbl"></div>
+  </div>
+  <div class="view" id="view-tac">
+    <div class="tac-section" id="tac-list"></div>
+  </div>
+  <div class="view" id="view-suits">
+    <div class="suit-head">
+      <div class="suit-counts"><div class="suit-count-main" id="suit-count-main">0 <span>/ 0 SUITS</span></div><div class="suit-count-cats" id="suit-count-cats"></div></div>
+      <div class="suit-progress-bar"><div class="suit-progress-fill" id="suit-prog-fill" style="width:0%"></div></div>
+      <div class="suit-filters" id="suit-filters"></div>
+    </div>
+    <div class="suit-list" id="suit-list"></div>
+  </div>
+</div>
+
+<!-- MISSION DETAIL -->
+<div id="det">
+  <div class="dh">
+    <button class="dh-back" onclick="closeDet()">‹</button>
+    <div class="dh-info">
+      <div class="dh-loc" id="d-loc"></div>
+      <div class="dh-title" id="d-title"></div>
+    </div>
+  </div>
+  <div class="det-tabs" id="det-tabs">
+    <div class="det-tab on" onclick="setDTab(0,this)">TARGETS</div>
+    <div class="det-tab" onclick="setDTab(1,this)">STORIES</div>
+    <div class="det-tab" onclick="setDTab(2,this)">STARTS</div>
+    <div class="det-tab" onclick="setDTab(3,this)">UNLOCKS</div>
+    <div class="det-tab" onclick="setDTab(4,this)">TIPS</div>
+    <div class="det-tab" onclick="setDTab(5,this)">PROGRESS</div>
+  </div>
+  <div class="det-pane on" id="dp-0"></div>
+  <div class="det-pane" id="dp-1"></div>
+  <div class="det-pane" id="dp-2"></div>
+  <div class="det-pane" id="dp-3"></div>
+  <div class="det-pane" id="dp-4"></div>
+  <div class="det-pane" id="dp-5"></div>
+</div>
+
+<!-- SPAWN SHEET -->
+<div id="spawn-bg" onclick="closeSpawn()"></div>
+<div id="spawn-sheet">
+  <div class="ss-handle"></div>
+  <div class="ss-head">
+    <div class="ss-title" id="ss-title"></div>
+    <div class="ss-sub" id="ss-sub"></div>
+  </div>
+  <div class="ss-body" id="ss-body"></div>
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nb on" onclick="setView('missions',this)">
+    <div class="nbi"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></div>MISSIONS
+  </button>
+  <button class="nb" onclick="setView('elusive',this)">
+    <div class="nbi"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/><line x1="8" y1="2" x2="8" y2="4"/><line x1="8" y1="12" x2="8" y2="14"/><line x1="2" y1="8" x2="4" y2="8"/><line x1="12" y1="8" x2="14" y2="8"/></svg></div>ELUSIVE
+  </button>
+  <button class="nb" onclick="setView('db',this)">
+    <div class="nbi"><svg viewBox="0 0 16 16"><line x1="1" y1="4" x2="15" y2="4"/><line x1="1" y1="8" x2="11" y2="8"/><line x1="1" y1="12" x2="13" y2="12"/></svg></div>DATABASE
+  </button>
+  <button class="nb" onclick="setView('tac',this)">
+    <div class="nbi"><svg viewBox="0 0 16 16"><path d="M2 13 L6 3 L10 9 L12 7 L14 13 Z"/></svg></div>TACTICS
+  </button>
+  <button class="nb" onclick="setView('suits',this)">
+    <div class="nbi"><svg viewBox="0 0 16 16"><path d="M4 2 L4 6 L2 8 L2 14 L14 14 L14 8 L12 6 L12 2 Z"/><path d="M4 2 Q8 5 12 2"/></svg></div>SUITS
+  </button>
+</div>
+
+<script>
+// ── METHOD CATEGORIES ─────────────────────────────────────────
+const MC={Poison:'cat-poison','Emetic Poison':'cat-poison','Lethal Poison':'cat-poison','Poison Drink':'cat-poison','Poison Wine':'cat-poison','Poison Food':'cat-poison','Poison IV':'cat-poison','Poison Injection':'cat-poison','Poison Bao Bun':'cat-poison','Poison Cocktail':'cat-poison','Poison Protein Shake':'cat-poison','Poison Sake':'cat-poison','Poison Coffee':'cat-poison','Poison Communion Wine':'cat-poison','Poison Champagne':'cat-poison','Poison Wine Barrel':'cat-poison','Poison Golf Cleaner':'cat-poison',Explosive:'cat-explosive','Remote Explosive':'cat-explosive','Proximity Explosive':'cat-explosive','Explosive Phone':'cat-explosive','Explosive Scarecrow':'cat-explosive','Explosion':'cat-explosive','Rig Pit Equipment':'cat-explosive','Crash Car via Sabotage':'cat-explosive','Blow Up':'cat-explosive','Explode Lab Equipment':'cat-explosive','Explode BBQ':'cat-explosive','Sabotage Boat Engine':'cat-explosive',Electrocution:'cat-electric','Sabotage Surgery':'cat-electric','Sabotage Robot':'cat-electric','Rig Recording Booth':'cat-electric','Overload':'cat-electric','Electrocution Phone':'cat-electric','Sabotage Vital Signs':'cat-electric','Flood Operating Room':'cat-electric','Flood OR':'cat-electric','Fiber Wire':'cat-stealth',Garrote:'cat-stealth','Lethal Syringe':'cat-stealth','Lethal Injection':'cat-stealth',Push:'cat-push',Drop:'cat-push','Throw From':'cat-push',Pushed:'cat-push',Fall:'cat-push','Sacrifice Ritual':'cat-push',Sniper:'cat-sniper','Sniper Rifle':'cat-sniper',Shoot:'cat-sniper',Drown:'cat-melee',Drowning:'cat-melee',Melee:'cat-melee',Crush:'cat-melee',Katana:'cat-melee',Chandelier:'cat-accident','Hippo':'cat-unique','Grape Crusher':'cat-unique','Shark Tank':'cat-unique','Replace Heart':'cat-unique','Inject Serum':'cat-unique','Poison Coca Plant':'cat-unique','Drown in Puddle':'cat-unique'};
+function mCat(m){for(const k in MC)if(m.toLowerCase().includes(k.toLowerCase()))return MC[k];return'cat-melee'}
+
+// ── MISSION DATA ─────────────────────────────────────────────
+const M=[
+{id:'paris',g:'H1',title:'The Showstopper',loc:'Paris, France',suit:'Tuxedo with Gloves',bonus:false,targets:[{name:'Viktor Novikov',alias:'IAGO Handler',desc:'Fashion mogul and IAGO spy ring leader. Selling stolen intel at his Sanguine fashion show in the Palace de Walewska.',methods:['Chandelier','Poison Drink','Fiber Wire','Push','Sniper','Drown']},{name:'Dalia Margolis',alias:'IAGO Auctioneer',desc:'Runs the auction as a front to sell classified intel to the highest bidder.',methods:['Poison Wine','Electrocution','Push','Fiber Wire','Explosive Phone']}],stories:[{n:'The Showstopper',d:'Pose as model Helmut Kruger — parking lot disguise, backstage access granted.'},{n:'Whispers of the Dead',d:'Become the Vampire Magician for a private seance with Dalia.'},{n:'Auction Infiltration',d:'Steal an invitation from an attendee to enter the auction floor.'}],starts:['Main Entrance','Attic','Kitchen Staff Entrance','Security Room','Dressing Room (Mastery 5)','Rooftop (Mastery 10)'],mastery:[{l:5,n:'Lockpick Mk III',t:'Tool'},{l:7,n:'Remote Explosive Duck',t:'Explosive'},{l:10,n:'ICA19 F/A Stealth',t:'Pistol'},{l:15,n:'Attic Starting Location',t:'Location'},{l:20,n:'ICA19 Silverballer',t:'Pistol'}],escalations:[{n:'The Bjarkhov Bomb',lvl:5,unlock:'Sieger 300 Ghost Sniper + Explosive Phone',icon:'💣'},{n:'The Cheveyo Calibration',lvl:3,unlock:'ICA Electrocution Phone',icon:'⚡'},{n:'The Parabolic Arsenal',lvl:3,unlock:'ICA Remote Explosive Mk II',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Kitchen counter (staff area)','1F Waiter prep station (east wing)','Backstage storage room (near catwalk)','Janitor closet (near basement stairs)']},{item:'Lethal Poison Vial',cat:'lethal',locs:['B1 Security office drawer','GF Props table backstage (stage lights area)','B1 Guard locker room']},{item:'Poison Pill',cat:'pill',locs:["GF Secretary's desk (main office)",'Bathroom cabinet (near auction room)']}],Electrocution:[{item:'Fuse Box Overload',cat:'electric',locs:['B1 Basement fuse box — overload drops chandelier on Viktor during walkthrough','1F Stage lighting control — sabotage for floor kill']},{item:'Electrocution Phone',cat:'electric',locs:['Bring via loadout (unlock: The Cheveyo Calibration escalation)','1F Tech crew equipment case near stage (Staff disguise needed)']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:['B1 Security storage room','GF Parking garage pillar area','GF Tech crew equipment chest near stage']},{item:'Proximity Explosive',cat:'explosive',locs:['B1 Guard patrol box near main stairs','B1 Near generator room']}],'Fiber Wire':[{item:'Fiber Wire',cat:'wire',locs:['GF Backstage laundry room','B1 Security locker','Found on sleeping guard near staff entrance']}]},tips:['Drop the chandelier — overload basement fuse box, Novikov dies during the show walkthrough, SA rated.','Poison Dalia\'s wine before she requests it — she drinks alone during auction prep.','Helmut Kruger disguise from parking lot gives near-full access.','SA/SO: Attic start → fiber wire Novikov at statue → push Dalia from attic balcony.','Viktor visits the palace bathroom alone — perfect isolation window.']},
+
+{id:'sapienza',g:'H1',title:'World of Tomorrow',loc:'Sapienza, Italy',suit:'Smart Casual',bonus:false,targets:[{name:'Silvio Caruso',alias:'Bioweapon Developer',desc:'Paranoid recluse developing a DNA-targeting virus from his Amalfi coast childhood villa.',methods:['Poison Golf Cleaner','Explosive Telescope','Fiber Wire','Push','Lethal Injection','Drown']},{name:'Francesca De Santis',alias:'Lab Director',desc:'Caruso\'s project manager overseeing the virus from the catacombs beneath the church.',methods:['Poison','Push','Sniper','Fiber Wire']},{name:'Virus Sample',alias:'Primary Objective',desc:'The virus culture must be destroyed in the underground biolab.',methods:['Destroy Virus Culture']}],stories:[{n:'A Gilded Cage',d:'Pose as Dr. Oscar Lafayette, Caruso\'s therapist, for a private one-on-one session.'},{n:'The Icon',d:'Impersonate director Dino Bosco shooting in the piazza for restricted area access.'},{n:'Memento Mori',d:'Use Caruso\'s psychological trauma — his mother\'s grave and the right photographs.'},{n:'Modus Operandi',d:'Hack into the biolab via the keycard entrance.'}],starts:['Town Square','Villa Exterior','Pier','Catacombs (Mastery 3)','Rooftop Above Restaurant (Mastery 7)','Boat (Mastery 12)'],mastery:[{l:5,n:'Sapienza: Villa Entrance Start',t:'Location'},{l:7,n:'Coins (extra)',t:'Tool'},{l:10,n:'Jaeger 7 Sniper Rifle',t:'Sniper'},{l:15,n:'Remote Explosive Mk II',t:'Explosive'},{l:20,n:'HX10 Semtex Charge',t:'Explosive'}],escalations:[{n:'The Vector',lvl:3,unlock:'Jaeger 7 Tiger Sniper Rifle',icon:'🎯'},{n:'The Delgado Devastation',lvl:5,unlock:'HX10 Grenade + Remote Explosive Mk II',icon:'💣'},{n:'The Corky Complication',lvl:3,unlock:'ICA Remote Explosive Mk III',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Piazza Restaurant kitchen (behind counter)','Villa GF kitchen','Catacombs entrance lab assistant workbench','Villa grounds gardener shed']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Catacombs biolab anteroom','CICADA safe house shelf (near church)','Villa basement private lab desk']},{item:'Poison Pill',cat:'pill',locs:["Villa 2F Caruso's bedroom nightstand",'Piazza café kitchen shelf','Church sacristy cabinet']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:['Villa grounds gardener shed','Pier area harbor boat storage','Construction zone near town gate']}],'Fiber Wire':[{item:'Fiber Wire',cat:'wire',locs:['Church sacristy table','Villa GF staff break room','Found on chef near kitchen back door']}]},tips:['Poison the golf ball cleaner in the basement — Caruso dies privately during his routine.','Rig the telescope explosive — Caruso visits his terrace balcony alone after the therapy session.','Therapist story = guaranteed isolated meeting. SA with any method.','SA/SO: Therapist disguise → private kill Caruso → rig telescope for explosive → poison Francesca poolside.']},
+
+{id:'marrakesh',g:'H1',title:'A Gilded Cage',loc:'Marrakesh, Morocco',suit:'Smart Casual',bonus:false,targets:[{name:'Claus Hugo Strandberg',alias:'Corrupt Banker',desc:'Embezzled millions causing economic collapse. Hiding in the Swedish Consulate under diplomatic protection.',methods:['Garrote in Safe Room','Sniper Through Window','Explosive Phone','Poison','Lure Outside']},{name:'Reza Zaydan',alias:'General',desc:'Coup leader exploiting financial chaos. Operating from a school repurposed as military HQ.',methods:['Poison','Fiber Wire','Sniper','Lure to Barber','Explosive']}],stories:[{n:'A Gilded Cage',d:'Impersonate Zaydan\'s aide to escort Strandberg to a private "meeting."'},{n:'The Guru',d:'Pose as a spiritual leader for a private meeting with Zaydan.'},{n:'Army of Darkness',d:'Dress as a soldier for free movement through the school compound.'}],starts:['Street Market','Consulate Exterior','School Gate','Rooftop (Mastery 5)','Souk Interior (Mastery 10)'],mastery:[{l:5,n:'ICA Micro Remote Explosive',t:'Explosive'},{l:7,n:'Marrakesh: School Entrance Start',t:'Location'},{l:10,n:'W870 Tactical Shotgun',t:'Shotgun'},{l:15,n:'Jaeger 7 Tiger Sniper',t:'Sniper'},{l:20,n:'Fiberwire (Classic)',t:'Melee'}],escalations:[{n:'The Aelwin Augment',lvl:3,unlock:'ICA Micro Remote Explosive Mk II',icon:'💣'},{n:'The Kebron Culmination',lvl:3,unlock:'Fiberwire Mk II + Marrakesh Night Start',icon:'🔪'},{n:'The Mercurial Alchemy',lvl:3,unlock:'W870 Shotgun Variant',icon:'🔫'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['1F Consulate kitchen','GF School cafeteria','Market spice stall (souk)','Café kitchen near school entrance']},{item:'Lethal Poison Pill',cat:'pill',locs:["2F Zaydan's office desk (school)",'3F Strandberg safe room table (consulate)','Consulate infirmary shelf']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:['Market arms dealer stall','School basement storage','Consulate parking garage']}]},tips:['Strandberg\'s safe room has a ventilation shaft — drop a gas canister through it.','Zaydan gets a private barber shave — perfectly isolated from guards.','Aide disguise walks you directly into the consulate\'s inner sanctum.','SASO: Rooftop start → snipe Zaydan during barber visit → consulate side entrance → garrote Strandberg.']},
+
+{id:'bangkok',g:'H1',title:'Club 27',loc:'Bangkok, Thailand',suit:'Smart Casual',bonus:false,targets:[{name:'Jordan Cross',alias:'Rock Star / CICADA',desc:'Accused murderer hiding in the Himmapan Hotel penthouse behind celebrity status.',methods:['Rig Recording Booth','Push','Poison','Lethal Injection','Drown','Explosive']},{name:'Ken Morgan',alias:'CICADA Lawyer',desc:'Cross\'s legal fixer who covered up the murder.',methods:['Drown in Spa','Poison','Garrote','Push','Lethal Injection']}],stories:[{n:'A Famous Guest',d:'Pose as a music journalist for a sit-down interview with Jordan Cross.'},{n:'Heartbreaker',d:'Impersonate hotel staff for access to restricted upper floors.'},{n:'Midnight Madness',d:'Become the hotel\'s personal chef for penthouse kitchen access.'},{n:'Darkness Descends',d:'Use the hotel PA system to lure Jordan to an isolated location.'}],starts:['Hotel Lobby','Boat Dock','Staff Entrance','Kitchen (Mastery 5)','Penthouse Roof (Mastery 10)'],mastery:[{l:5,n:'Club 27 Staff Locker Start',t:'Location'},{l:7,n:'ICA Remote Explosive',t:'Explosive'},{l:10,n:'ICA19 Chrome Pistol',t:'Pistol'},{l:15,n:'Remote Breaching Charge',t:'Explosive'},{l:20,n:'Bartoli 75R Pistol',t:'Pistol'}],escalations:[{n:'The Frangipane Fusilade',lvl:3,unlock:'Striker Pistol',icon:'🔫'},{n:'The Paparazzo Parable',lvl:3,unlock:'Bartoli 75R Silenced',icon:'🔫'},{n:'The Mandelbulb Anomaly',lvl:3,unlock:'ICA Flash Grenade',icon:'💡'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Hotel kitchen (2 locations)','2F Room service prep cart (corridor)','1F Bar prep area behind counter']},{item:'Lethal Poison Pill',cat:'pill',locs:['1F Hotel bar back shelf','5F Penthouse kitchen counter','Staff break room medical kit']},{item:'Lethal Poison Vial',cat:'lethal',locs:['B1 Hotel laundry room',"GF Doctor's bag in lobby"]}],Electrocution:[{item:'Recording Studio Circuit',cat:'electric',locs:['2F Recording booth fuse box — sabotage the booth speakers, Cross electrocuted when he records alone','B1 Spa electrical panel — electrocute the jacuzzi water']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:['B1 Hotel maintenance room','GF Loading dock storage','Garden shed near pool area']}]},tips:['Sabotage the recording booth fuse box — Cross dies alone mid-guitar session, SA.','Ken Morgan visits the hotel spa — drown in jacuzzi or poison the poolside drink.','Chef outfit provides full penthouse access with zero suspicion.','SA/SO: Boat dock → staff disguise → booth sabotage → spa drown Morgan.']},
+
+{id:'colorado',g:'H1',title:'Freedom Fighters',loc:'Colorado, USA',suit:'Combat Suit',bonus:false,targets:[{name:'Sean Rose',alias:'Militia Commander',desc:'Explosives expert and militia chief. Runs the fortified compound with absolute authority.',methods:['Explosive Scarecrow','Explode Bomb Belt','Sniper','Lure to Windmill','Poison']},{name:'Penelope Graves',alias:'Tactician',desc:'Strategic architect of the militia\'s operations. Reviews maps in the farmhouse.',methods:['Sniper','Lethal Injection','Lure Outside','Poison Food','Fiber Wire']},{name:'Ezra Berg',alias:'Interrogator',desc:'Runs an interrogation programme in the compound basement.',methods:['Crush with Chair Device','Lethal Syringe','Explosive','Garrote']},{name:'Maya Parvati',alias:'Combat Instructor',desc:'Trains militia fighters in the open yard. Alert and mobile.',methods:['Sniper','Poison','Trip Mine','Lethal Injection']}],stories:[{n:'The Scarecrow',d:'Rig Sean Rose\'s cherished scarecrow with explosives — he inspects it daily.'},{n:'Deep Cover',d:'Impersonate the militia\'s new recruit for free compound movement.'},{n:'Whistle Blower',d:'Intercept a mole communication to lure Penelope Graves to a private meeting.'}],starts:['Cornfield','Militia Compound Gate','Barn Entrance','Safe House (Mastery 5)','Treeline South (Mastery 10)'],mastery:[{l:5,n:'Krugermeier 2-2 (Dark)',t:'Pistol'},{l:7,n:'HX10 Proximity Explosive',t:'Explosive'},{l:10,n:'CICADA Combat Suit',t:'Suit'},{l:15,n:'Colorado Militia Disguise',t:'Suit'},{l:20,n:'ICA Combat Shotgun',t:'Shotgun'}],escalations:[{n:'The Gator Gorge',lvl:3,unlock:'ICA Remote Proximity Taser',icon:'⚡'},{n:'The Kotti Paradigm',lvl:3,unlock:'HX10 Grenade Mk II',icon:'💣'},{n:'The Freedom Fighters Escalation',lvl:5,unlock:'SMG Tactical (CICADA)',icon:'🔫'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Farmhouse kitchen','South compound militia mess tent','Barn storage room']},{item:'Lethal Poison Pill',cat:'pill',locs:["Berg's interrogation room table (basement)",'Graves\' tactical desk (farmhouse 2F)','Parvati\'s quarters shelf']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:['Barn militia armory cabinet','Explosives cache near windmill','Underground bunker storage']},{item:'Trip Mine',cat:'explosive',locs:['Militia equipment crate near training area','Barn loft (2F)']}]},tips:['The scarecrow story is WOA\'s most satisfying SA kill — rig it and walk away.','Berg\'s interrogation chair kill: strap him in and activate it.','Parvati\'s training loop is predictable — sniper from the tree line.','Elimination order: Parvati (most mobile) → Graves → Berg → Rose last.']},
+
+{id:'hokkaido',g:'H1',title:'Situs Inversus',loc:'Hokkaido, Japan',suit:'Patient Gown (GAMA)',bonus:false,targets:[{name:'Erich Soders',alias:'ICA Traitor',desc:'Former ICA Director who sold agent identities. Undergoing heart surgery at GAMA. His condition: dextrocardia.',methods:['Sabotage Surgery Robot','Replace Heart','Lethal Injection','Flood Operating Room','Sabotage Vital Signs']},{name:'Yuki Yamazaki',alias:'Providence Lawyer',desc:'Yakuza-aligned Providence lawyer. Uses the spa and mountain trail for private meetings.',methods:['Poison Sake','Push from Mountain Trail','Poison IV','Fiber Wire','Sniper']}],stories:[{n:'Doctor\'s Appointment',d:'Infiltrate the surgical team to be present during Soders\' operation.'},{n:'Ninja Assassin',d:'Use the secret ninja entry point to bypass facility security entirely.'},{n:'Zen and the Art',d:'Track Yamazaki\'s spa and trail schedule for isolation windows.'}],starts:['Patient Room','Morgue','Ski Slope (Mastery 5)','Staff Entrance (Mastery 8)','Ninja Start — Seaside Cliff (Mastery 15)'],mastery:[{l:5,n:'Ninja Suit',t:'Suit'},{l:7,n:'GAMA Staff Disguise',t:'Suit'},{l:10,n:'Pale Rider Suit',t:'Suit'},{l:15,n:'Katana',t:'Melee'},{l:20,n:'ICA19 Goldballer',t:'Pistol'}],escalations:[{n:'The Okuma Operative',lvl:3,unlock:'Lockpick Mk III + GAMA Patient Outfit Variant',icon:'🔓'},{n:'The Tren Polare',lvl:3,unlock:'Ninja Suit Early Unlock',icon:'🥷'},{n:'The Yuki Gambit',lvl:3,unlock:'ICA Remote Electrocution Phone Mk II',icon:'⚡'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF GAMA main kitchen','1F Spa wellness bar','Exterior mountain trail rest hut']},{item:'Lethal Poison Pill',cat:'pill',locs:['B1 Morgue storage cabinet','Patient room side table (47\'s room)','Surgical wing medical supply closet']},{item:'Lethal Injection',cat:'lethal',locs:['OR On surgical tray — usable directly on Soders','B1 Medical storage room (surgical wing)','Pre-op nurse station drawer']}],Electrocution:[{item:'Surgery Robot Controls',cat:'electric',locs:['2F Surgical wing observation terminal — sabotage robot arms','OR Vital signs machine — flatline Soders remotely']},{item:'Spa Circuit',cat:'electric',locs:['B1 Spa electrical panel — electrocute hot spring']}]},tips:['Soders has dextrocardia — a normal heart transplant kills him. Unique and brilliant.','Yamazaki\'s sake ceremony: poison both cups — she performs the ritual alone.','Ninja start bypasses all entry checks — most efficient SA/SO route in H1.','Flatline Soders via vital signs monitor tamper — no witnesses, no trace.']},
+
+{id:'hawkesbay',g:'H2',title:'Nightcall',loc:"Hawke's Bay, New Zealand",suit:'Wetsuit',bonus:false,targets:[{name:'Alma Reynard',alias:'Shadow Client Operative',desc:'Sleeper operative in a remote beach house. Her partner Sean Rose was recently eliminated.',methods:['Garrote in Bedroom','Sniper','Fiber Wire','Lethal Injection','Electrocution','Drown']}],stories:[{n:'Nightcall',d:'No stories — pure infiltration. Reynard is sleeping. Enter quietly.'}],starts:["Beach Cove (only start)"],mastery:[{l:5,n:'Kalmer 1 Tranquilizer',t:'Tool'},{l:7,n:'ICA Proximity Explosive',t:'Explosive'},{l:10,n:'Remote Electrocution Phone',t:'Tool'},{l:15,n:'Pale Rider Suit',t:'Suit'},{l:20,n:'ICA19 F/A Gold',t:'Pistol'}],escalations:[{n:'The Nightcall Escalation',lvl:3,unlock:'Pale Rider Suit (Early Unlock)',icon:'👔'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:["GF Beach house kitchen counter",'Garden outdoor bar (east)']},{item:'Lethal Poison Pill',cat:'pill',locs:["Master bedroom bathroom cabinet","Kitchen shelf near coffee maker"]}],'Fiber Wire':[{item:'Fiber Wire',cat:'wire',locs:['Beach perimeter (found on guard patrol)','South tool shed']}]},tips:['SA/SO tutorial — one target, one bodyguard. Perfect for learning the basics.','Arrive early: Reynard sleeps, easy garrote. After 15min she wakes — much harder.','Sneak via southern cliffside — cameras only face the main approach.']},
+
+{id:'miami',g:'H2',title:'The Finish Line',loc:'Miami, Florida, USA',suit:'Smart Casual',bonus:false,targets:[{name:'Robert Knox',alias:'Providence Herald',desc:'Kronstadt Industries CEO and Providence member. In executive attendance at the race event.',methods:['Remote Explosive','Poison','Sniper','Lure to Garage','Push from Yacht']},{name:'Sierra Knox',alias:'Racing Driver',desc:'Robert\'s daughter and Kronstadt\'s star driver. In her race car for most of the event.',methods:['Rig Pit Crew Equipment','Crash Car via Sabotage','Lure Outside Car','Push from Yacht','Sniper']}],stories:[{n:'The Finish Line',d:'Sabotage the Kronstadt car to eliminate Sierra during the race.'},{n:'Flamingo',d:'Obtain the flamingo mascot costume — near-universal access throughout the venue.'},{n:'Murph the Mascot',d:'Find and subdue the real mascot for the costume.'},{n:'Motorsport PR',d:'Get a press pass for journalist access to Robert\'s paddock.'}],starts:['Main Entrance','Kronstadt Paddock','Yacht Dock','Pier (Mastery 5)','Race Pit Start (Mastery 10)'],mastery:[{l:5,n:'ICA Briefcase Mk II',t:'Tool'},{l:7,n:'Mixtape 47 Distraction',t:'Tool'},{l:10,n:'Sieger 300 Ghost Sniper',t:'Sniper'},{l:15,n:'ICA19 Silverballer (Miami)',t:'Pistol'},{l:20,n:'Golden Shotgun',t:'Shotgun'}],escalations:[{n:'The Gauchito Antiquity',lvl:3,unlock:'Mixtape 47 (Early Unlock)',icon:'📼'},{n:'The Delgado Devastation Mk II',lvl:3,unlock:'Remote Explosive Variant',icon:'💣'},{n:'The Miami Minuet',lvl:3,unlock:'ICA Briefcase Mk III',icon:'💼'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Paddock Kronstadt catering station','GF Press food stand (main circuit)','Below deck Yacht galley kitchen']},{item:'Lethal Poison Pill',cat:'pill',locs:['2F Kronstadt VIP suite bar (paddock)','Yacht captain\'s quarters','Medical tent shelf (main entrance)']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Pit lane Race medical team case','Pit garage Kronstadt engineering station']}],Sniper:[{item:'Sniper Vantage Points',cat:'vantage',locs:['Beach area — clean LOS to observation deck (Robert\'s walk)','Kronstadt rooftop crane platform','Yacht upper deck','Press box 2F (overlooking pit lane)']}]},tips:['Sabotage the pit stop coolant equipment — Sierra dies during the stop, SA rated.','The flamingo costume = near-universal access and zero suspicion. Get it first.','Robert walks to the observation deck at a specific time — beach sniper is trivial SA.']},
+
+{id:'santafortuna',g:'H2',title:'Three-Headed Serpent',loc:'Santa Fortuna, Colombia',suit:'Smart Casual',bonus:false,targets:[{name:'Rico Delgado',alias:'Cartel Boss',desc:'Head of the Santa Fortuna cartel. Fortified hilltop mansion.',methods:['Hippo','Poison','Sniper','Lure to Statue','Garrote']},{name:'Andrea Martinez',alias:'Cartel Politician',desc:'Regional power broker laundering cartel money.',methods:['Poison','Push','Sniper','Lure to Cave','Fiber Wire']},{name:'Jorge Franco',alias:'Drug Chemist',desc:'Runs the remote coca lab. Paranoid and routine-bound.',methods:['Explode Lab Equipment','Poison Coca Plant','Lure to Trap','Sniper','Garrote']}],stories:[{n:'Shaman\'s Sanctuary',d:'Pose as the shaman performing a blessing ceremony for Delgado.'},{n:'Plastic Surgeon',d:'Impersonate the surgeon making a house call for Martinez\'s procedure.'},{n:'Narco',d:'Cartel disguise for free movement near Franco\'s lab.'}],starts:['Village Square','Mansion Gate','Coca Fields','Rebel Camp (Mastery 5)','River Dock (Mastery 10)'],mastery:[{l:5,n:'Remote Micro Taser',t:'Tool'},{l:7,n:'Concealable Knife',t:'Melee'},{l:10,n:'ICA Combat Knife',t:'Melee'},{l:15,n:'Pale Rider Suit (Colombia)',t:'Suit'},{l:20,n:'Bartoli 12G Shotgun',t:'Shotgun'}],escalations:[{n:'The Hippo',lvl:3,unlock:'Concealable Knife (Early)',icon:'🔪'},{n:'The Gabriel Vendetta',lvl:3,unlock:'HWK21 Pistol Variant',icon:'🔫'},{n:'The Sigurd Rite',lvl:3,unlock:'ICA Proximity Explosive (Colombia)',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Mansion kitchen (staff area)','Market village cantina bar','Coca lab entrance lab assistant workstation','Rebel camp cook fire']},{item:'Lethal Poison Pill',cat:'pill',locs:["Franco's desk (coca lab interior)",'Martinez private office shelf','Mansion perimeter guard post cabinet']},{item:'Lethal Poison Vial',cat:'lethal',locs:["Shaman's hut shelf (village)",'Coca lab chemical storage (restricted)','Mansion infirmary 2F']}]},tips:['Hippo kill: lure Delgado to the pen with meat bait. Unmissable experience.','Shaman ceremony = private kill on Delgado. Best mission story in H2.','Martinez\'s plastic surgery appointment means sedation — easy disposal.','Franco\'s lab machinery: his inspection cycle puts him directly at the machine.']},
+
+{id:'mumbai',g:'H2',title:'Chasing a Ghost',loc:'Mumbai, India',suit:'Smart Casual',bonus:false,targets:[{name:'Vanya Shah',alias:'Crows Gang Leader',desc:'Ruthless gang boss running the Mumbai underworld from the slums.',methods:['Lure to Laundry Machine','Poison','Fiber Wire','Sniper','Electrocution']},{name:'Dawood Rangan',alias:'Bollywood Producer',desc:'Film producer and gang financier. Running a shoot inside the slum complex.',methods:['Sabotage Film Crane','Lure to Rooftop','Fiber Wire','Poison Food','Sniper']},{name:'Wazir Kale (The Maelstrom)',alias:'Phantom Killer',desc:'Highly dangerous assassin with an unknown face. Identify him first.',methods:['Any Method Once Identified','Poison','Sniper','Fiber Wire','Garrote']}],stories:[{n:'Chasing a Ghost',d:'Follow informant clues through the slum to identify the Maelstrom.'},{n:'Mumbai Connection',d:'Use the Bollywood production as cover to reach Rangan.'},{n:'The Kashmirian',d:'Take the rival assassin\'s contract and use their vantage point.'}],starts:['Train Station','Slums Market','Film Set East','Rooftop (Mastery 5)','Kashmirian Nest (Mastery 10)'],mastery:[{l:5,n:'ICA19 Icicle Edition',t:'Pistol'},{l:7,n:'Lethal Syringe Mk II',t:'Tool'},{l:10,n:'Striker Pistol',t:'Pistol'},{l:15,n:'HWK21 Pale Homemade Silenced',t:'Pistol'},{l:20,n:'Jaeger 7 Lancer Sniper',t:'Sniper'}],escalations:[{n:'The Kashmirian Contingency',lvl:3,unlock:'Jaeger 7 Lancer Sniper',icon:'🎯'},{n:'The Ikaika Increment',lvl:3,unlock:'Lethal Syringe Mk II (Early)',icon:'💉'},{n:'The Corvo Effect',lvl:3,unlock:'ICA Proximity Explosive Mk II',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Multiple food stalls in slum market (3 locations)','Bollywood film catering table',"Rangan's production trailer kitchen"]},{item:'Lethal Poison Pill',cat:'pill',locs:["Rangan's production office 2F (slum building)",'Shah\'s private quarters shelf','Crows gang office cabinet']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Slum medical tent (near market)','Bollywood prop storage']}],Sniper:[{item:'Sniper Vantage Points',cat:'vantage',locs:['Kashmirian nest rooftop — LOS to Rangan balcony AND Shah laundry area','Bollywood crane platform (Rangan close range)','Train station roof (wide coverage)']}]},tips:['Maelstrom identity is randomised each run — ask locals, follow behavioural cues.','Kashmirian role gives two-target opportunity from one sniper position.','Rangan\'s film crane sabotaged swings into him during his walkthrough.','Shah\'s laundry utility room is isolated — easy fiber wire window.']},
+
+{id:'whittleton',g:'H2',title:'Another Life',loc:'Whittleton Creek, USA',suit:'Smart Casual',bonus:false,targets:[{name:'Janus',alias:"Shadow Client's Handler",desc:'Retired spymaster living quietly in the suburbs. Runs operations from his neighborhood home.',methods:['Poison Sandwich','Lure to Garden Shed','Fiber Wire During Walk','Sniper Through Window','Explosive Car']},{name:'Nolan Cassidy',alias:'Secret Service Agent',desc:'Former Secret Service operative providing security for Janus.',methods:['Lure to BBQ Area','Electrocute in Basement','Poison','Sniper','Garrote']}],stories:[{n:'Another Life',d:'Pose as a realtor or friendly neighbor to gather intel and blend in.'},{n:'Landscaping',d:'Use garden maintenance cover to access both targets\' properties.'},{n:'A Day in the Life',d:'Follow Janus\'s daily routine beat-by-beat.'}],starts:['Neighborhood Entrance','Janus Property (Mastery 3)','BBQ Party Area','Underground Bunker (Mastery 7)'],mastery:[{l:5,n:'ICA Remote Explosive Mk III',t:'Explosive'},{l:7,n:'HWK21 Pale Tactical',t:'Pistol'},{l:10,n:'Sieger 300 Advanced Sniper',t:'Sniper'},{l:15,n:'Suburban Master Key',t:'Tool'},{l:20,n:'ICA Electrocution Phone (Whittleton)',t:'Tool'}],escalations:[{n:'The Whittleton Whittler',lvl:3,unlock:'Remote Explosive Mk III (Early)',icon:'💣'},{n:'The Suburban Reprise',lvl:3,unlock:'Sieger 300 Advanced (Early)',icon:'🎯'},{n:'The Procureur Elucidation',lvl:3,unlock:'ICA Lockpick Mk IV',icon:'🔓'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['BBQ food preparation table (party area)',"Janus's GF kitchen",'Neighborhood store back room']},{item:'Lethal Poison Pill',cat:'pill',locs:["Cassidy's house bathroom cabinet",'Janus\' bedroom medicine cupboard','Bunker medical supply shelf']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Bunker lab area','BBQ shed shelf']}],Explosive:[{item:'Remote Explosive',cat:'explosive',locs:["Cassidy's garage (2 locations)",'Garden maintenance shed','Janus\'s garden storage box']}],Electrocution:[{item:'Basement Panel',cat:'electric',locs:["Cassidy's basement electrical junction — sabotage and lure him down",'Janus\' utility room fuse box']}]},tips:['Remote explosive on Janus\'s parked car is perfect for his daily neighborhood walk.','Block party creates low-suspicion cover — both targets attend at different times.','Janus\'s bunker accessed via the garden shed — great for mission story items.']},
+
+{id:'sgail',g:'H2',title:'The Ark Society',loc:'Isle of Sgàil, Atlantic Ocean',suit:'Smart Casual',bonus:false,targets:[{name:'Zoe Washington',alias:'Ark Society Leader',desc:'One of two Washington sisters co-leading the Ark Society doomsday collective.',methods:['Push from Balcony','Garrote in Chamber','Sacrifice Ritual','Sniper','Explosive']},{name:'Sophia Washington',alias:'Ark Society Co-Leader',desc:'The calculating Washington sister. Uses the castle\'s lower areas and submarine dock.',methods:['Lure to Submarine','Push from Walkway','Poison Communion Wine','Sniper','Garrote']}],stories:[{n:'The Ark Society',d:'Obtain ceremonial robes and a membership key to access the inner sanctum.'},{n:'The Procession',d:'Become the hooded executioner — Zoe walks willingly into the ritual.'}],starts:['Helipad','Docks','Castle Main Entrance','Crypts (Mastery 5)','Society Member Start (Mastery 10)'],mastery:[{l:5,n:'ICA Poison Vial',t:'Tool'},{l:7,n:'Ark Society Ceremonial Robes',t:'Suit'},{l:10,n:'ICA Briefcase Mk III',t:'Tool'},{l:15,n:'Druzhina 34 Sniper',t:'Sniper'},{l:20,n:'ICA19 Silverballer (Sgàil)',t:'Pistol'}],escalations:[{n:'The Lesley Celebration',lvl:3,unlock:'Druzhina 34 Sniper (Early)',icon:'🎯'},{n:"The Archivist's Ordeal",lvl:3,unlock:'ICA Briefcase Mk III (Early)',icon:'💼'},{n:'The Tidewater Diversion',lvl:3,unlock:'ICA Remote Explosive Mk IV',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Castle kitchen (catering area)','Ceremonial altar wine staging','2F Member\'s lounge bar']},{item:'Lethal Poison Pill',cat:'pill',locs:["Sophia's private quarters (lower level)",'Zoe\'s ceremonial chamber side table','Castle library drinks cabinet (restricted)']}]},tips:['The executioner ritual: Zoe walks to her death willingly. Most atmospheric kill in the trilogy.','Sophia\'s submarine dock visit is completely isolated — zero-risk fiber wire.','SASO: Executioner disguise → ritual kill Zoe → lower decks → garrote Sophia at sub dock.']},
+
+{id:'newyork',g:'H2',title:'Golden Handshake',loc:'New York City, USA',suit:'Smart Casual',bonus:true,targets:[{name:'Athena Savalas',alias:'Kronstadt Bank Director',desc:'Director of Merces Bank, destroying evidence of Providence\'s financial network.',methods:['Lure to Vault','Poison Coffee','Push from Penthouse','Sniper','Garrote','Explosive']}],stories:[{n:'Golden Handshake',d:'Infiltrate and retrieve Providence evidence before Savalas destroys it.'},{n:'The Appraiser',d:'Pose as an art valuator to bypass most security checkpoints.'},{n:'Bank Heist',d:'Access the vault through maintenance tunnels beneath the building.'}],starts:['Bank Lobby','Rooftop','Maintenance Tunnel Entrance','Security Room'],mastery:[{l:5,n:'Datpicker Mk III',t:'Tool'},{l:7,n:'Lockpick Gold',t:'Tool'},{l:10,n:'ICA19 F/A Gold',t:'Pistol'},{l:15,n:'New York Security Disguise',t:'Suit'},{l:20,n:'Pale Rider Suit (NY)',t:'Suit'}],escalations:[{n:'The Apprehensive Subordinate',lvl:3,unlock:'ICA19 F/A Gold (Early)',icon:'🔫'},{n:'The Gilded Necklace',lvl:3,unlock:'Datpicker Mk III (Early)',icon:'🔓'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Bank café (lobby area)','2F Executive lounge kitchen']},{item:'Lethal Poison Pill',cat:'pill',locs:["Penthouse Savalas's office desk",'Bank vault antechamber side table']},{item:'Lethal Poison Vial',cat:'lethal',locs:['2F Security medical station','Maintenance tunnel supply box']}]},tips:['Penthouse is the cleanest kill zone — isolated with multiple method options.','Art appraiser disguise bypasses most security without key cards.','Tunnel entry avoids virtually all cameras in the building.']},
+
+{id:'haven',g:'H2',title:'The Last Resort',loc:'Haven Island, Maldives',suit:'Smart Casual',bonus:true,targets:[{name:'Ljudmila Vetrova',alias:'Data Broker',desc:'Erases identities for Providence from this luxury private island.',methods:['Shark Tank','Poison Cocktail','Lure to Seaplane','Fiber Wire on Beach','Sniper']},{name:'Tyson Williams',alias:'Former CIA Director',desc:'Ex-CIA living in comfortable exile. Maintains his physical regime daily.',methods:['Lure to Gym','Drown in Pool','Sniper','Poison Protein Shake','Garrote']},{name:'Steven Bradley',alias:'Hacker',desc:'Creator of Vetrova\'s data system. Uses a resort persona as cover.',methods:['Explode BBQ','Push from Cliff','Lure to Server Room','Poison Drink','Sniper']}],stories:[{n:'The Last Resort',d:'Infiltrate as guest or staff — each target has a leisure-based isolation window.'},{n:'The Shark',d:'Lure Vetrova to the shark observation platform — controllable release mechanism.'}],starts:['Resort Dock','Beach (West)','Staff Quarters','Speedboat (Mastery 5)','Rooftop (Mastery 10)'],mastery:[{l:5,n:'Remote Electrocution Phone',t:'Tool'},{l:7,n:'Sieger 300 Viper Sniper',t:'Sniper'},{l:10,n:'ICA Casual Tourist Suit',t:'Suit'},{l:15,n:'Haven Staff Disguise',t:'Suit'},{l:20,n:'HWK21 Homemade Silenced',t:'Pistol'}],escalations:[{n:'The Haven Harbinger',lvl:3,unlock:'Sieger 300 Viper (Early)',icon:'🎯'},{n:'The Tropical Temptation',lvl:3,unlock:'ICA Electrocution Phone Mk II',icon:'⚡'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Resort main bar (multiple locations)','Restaurant kitchen',"Beach bar near Vetrova's bungalow"]},{item:'Lethal Poison Pill',cat:'pill',locs:["Vetrova's bungalow fridge (restricted)",'Williams\'s villa bathroom cabinet',"Bradley's quarters shelf"]},{item:'Lethal Poison Vial',cat:'lethal',locs:['Resort medical center (south wing)','Server room maintenance kit']}]},tips:['Vetrova\'s shark tank: lure her to inspect the panel — release button is right there.','Williams\'s gym is fully isolated during his workout — drown or garrote freely.','Bradley\'s BBQ explodes if rigged — he grills every afternoon.']},
+
+{id:'dubai',g:'H3',title:'On Top of the World',loc:'Dubai, UAE',suit:'Smart Casual',bonus:false,targets:[{name:'Marcus Stuyvesant',alias:'Providence Founder',desc:'Co-founder of Providence attending the Sceptre Tower opening gala.',methods:['Push from Skyscraper','Poison Champagne','Fiber Wire on Helipad','Lure to Art Installation','Explosive']},{name:'Carl Ingram',alias:'Providence Founder',desc:"Stuyvesant's co-founder. Paranoid and rarely leaves the penthouse level.",methods:['Subdue and Push from Window','Poison','Sniper','Lure to Penthouse','Garrote']}],stories:[{n:'How the Mighty Fall',d:'Attend the gala and manoeuvre both founders to exposed positions at the edge.'},{n:'Bird of Prey',d:'Enter via the paraglide drop point on the exterior — most cinematic entry in WOA.'},{n:'Domestic Disturbance',d:'Exploit a staff conflict to gain direct penthouse access.'}],starts:['Lobby (GF)','Penthouse Exterior (Mastery 3)','Art Gallery Floor','Server Room (Mastery 5)','Parachute Drop (Mastery 10)'],mastery:[{l:5,n:'ICA Tactical Shotgun',t:'Shotgun'},{l:7,n:'Dubai Penthouse Shortcut Door 1',t:'Shortcut'},{l:10,n:'Druzhina 34 Arctic Sniper',t:'Sniper'},{l:15,n:'Dubai Shortcut Door 2',t:'Shortcut'},{l:20,n:'Golden Enfield Trophy',t:'Rifle'}],escalations:[{n:'The Burj Al-Ghazali',lvl:3,unlock:'Permanent Shortcut Doors (all future runs)',icon:'🔓'},{n:'The Dalton Dissection',lvl:3,unlock:'Druzhina 34 Arctic (Early)',icon:'🎯'},{n:'The Sceptre Provocation',lvl:3,unlock:'ICA Remote Explosive Mk IV',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Gala floor catering station','Penthouse kitchen (staff area)','Server room break room shelf']},{item:'Lethal Poison Pill',cat:'pill',locs:["Ingram's penthouse office desk",'Stuyvesant\'s private suite','Staff medical kit near helipad']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Penthouse security medical station','Maintenance shaft storage box']}],Push:[{item:'Drop Locations',cat:'unique',locs:["External observation walkway — Stuyvesant's private outdoor area (highest drop in WOA)",'Penthouse window ledge (Ingram)','Art installation upper level platform','Gala terrace railing (Stuyvesant)']}]},tips:['Stuyvesant\'s outdoor walkway: the longest fall in the entire trilogy.','Ingram rarely leaves penthouse — domestic disturbance story for direct access.','Shortcut doors from escalation transform all future replays.','SASO: Paraglide drop → catering disguise → push Ingram → terrace push Stuyvesant.']},
+
+{id:'dartmoor',g:'H3',title:'Death in the Family',loc:'Dartmoor, England',suit:'Smart Casual',bonus:false,targets:[{name:'Alexa Carlisle',alias:'Providence Director',desc:'Head of the Carlisle family and Providence Director. Murdered her own brother Zachary.',methods:['Frame for Murder','Lure to Garden','Sniper from Moors','Push from Rooftop','Poison','Fiber Wire']}],stories:[{n:'Death in the Family',d:'Pose as private detective to investigate a murder mystery — a full story mission.'},{n:'The Will',d:'Photograph Alexa\'s will for Freelancer-critical intelligence.'},{n:"Means, Motive & Opportunity",d:"Solve the murder, expose Alexa's guilt — she retreats to her study alone."}],starts:['Moors Entrance','Manor Front Door','Funeral Garden','Greenhouse (Mastery 5)','Graveyard (Mastery 10)'],mastery:[{l:5,n:'Dartmoor Garden Show Bonus Mission',t:'Mission'},{l:7,n:'ICA Remote Explosive Mk III',t:'Explosive'},{l:10,n:'Enfield No.2 Pistol',t:'Pistol'},{l:15,n:'Pale Rider Suit (Dartmoor)',t:'Suit'},{l:20,n:'Dartmoor Staff Disguise',t:'Suit'}],escalations:[{n:'The Reinholt Treasure',lvl:3,unlock:'Enfield No.2 Pistol (Early)',icon:'🔫'},{n:'The Dartmoor Garden Show',lvl:3,unlock:'Greenhouse Entrance Start',icon:'🌿'},{n:'The Moors Masquerade',lvl:3,unlock:'ICA Proximity Explosive Mk III',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Manor kitchen (staff area)','Estate grounds garden shed','Outdoor funeral wake food table']},{item:'Lethal Poison Pill',cat:'pill',locs:["2F Alexa's bedroom side table",'Study drinks cabinet (restricted)','Greenhouse chemical shelf']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Greenhouse lab area','GF Butler\'s personal supplies']}],Sniper:[{item:'Sniper Vantage Points',cat:'vantage',locs:['Moors high ground (LOS to garden where Alexa walks)','Greenhouse rooftop (close range)','Estate church tower']}]},tips:['The detective role is the best mission story in the trilogy — fully voiced, genuinely engaging.','Solving murder then framing Alexa: private study confrontation, cleanest SA option.','SASO: Detective disguise → solve murder → Alexa retreats alone → fiber wire in study.']},
+
+{id:'berlin',g:'H3',title:'Apex Predator',loc:'Berlin, Germany',suit:'Smart Casual',bonus:false,targets:[{name:'8 ICA Agents (eliminate any 5)',alias:'ICA Kill Squad',desc:'You are hunted. A squad of ICA agents is disguised throughout the Apex nightclub. Identify and eliminate at least 5.',methods:['Any Method','Lure to Basement','Fiber Wire','Sniper','Dancefloor Chaos','Poison']}],stories:[{n:'Apex Predator',d:'No mission stories. You are the prey. Turn the tables on each hunter.'}],starts:['Parking Lot','Club Front Entrance','Sewer Tunnel','Biker Area (Mastery 5)','Rooftop (Mastery 10)'],mastery:[{l:5,n:'ICA Silenced SMG',t:'SMG'},{l:7,n:'Berlin Biker Shortcut Door',t:'Shortcut'},{l:10,n:'Baller Chrome Tactical Pistol',t:'Pistol'},{l:15,n:'Berlin Casual Suit',t:'Suit'},{l:20,n:'Berlin Shortcut Unlocks',t:'Shortcut'}],escalations:[{n:'The Bangle Bounce',lvl:3,unlock:'ICA SMG Covert',icon:'🔫'},{n:'The Bauer Identity',lvl:3,unlock:'Baller Chrome Tactical (Early)',icon:'🔫'},{n:'The Rolf Resonance',lvl:3,unlock:'Remote Explosive Mk IV',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Club main bar (2 locations)','Backstage band area','GF Kitchen/prep area (staff)']},{item:'Lethal Poison Pill',cat:'pill',locs:['VIP lounge side table','Security office back room','Underground maintenance corridor']}],Sniper:[{item:'Sniper Vantage Points',cat:'vantage',locs:['Club rooftop (overlooking main yard)','Biker area upper walkway','South sewer tunnel rooftop access']}]},agents:[{n:'Agent Banner',d:'Disguised as Biker',l:'Biker hangout area (exterior east)'},{n:'Agent Chamberlin',d:'Disguised as Staff Member',l:'Club interior bar area (2F)'},{n:'Agent Davenport',d:'Disguised as Club Security',l:'Main entrance and checkpoint area'},{n:'Agent Green',d:'Disguised as Club Patron (Hipster)',l:'Dance floor and stage area'},{n:'Agent Hall',d:'Disguised as Festival Goer',l:'Outdoor grounds near parking'},{n:'Agent Montgomery',d:'Disguised as Club Maintenance',l:'Underground tunnels and back areas'},{n:'Agent Rhodes',d:'Disguised as Biker',l:'Biker compound (exterior north)'},{n:'Agent Swan',d:'Disguised as Club Bartender',l:'Main bar inside club (1F)'}],tips:['You are hunted. Use this: agents are alert but still follow patrol routes.','Instinct reveals agents when close — they glow differently. Stalk, then strike.','Biker disguise gives the best freedom across the whole club.','Only 5 of 8 required — pick the most isolated: Montgomery (tunnels), Banner, Rhodes are easiest.','Underground maintenance: dark, no civilians, no noise witnesses.','No noise concern near the dancefloor — music masks everything including gunshots.']},
+
+{id:'chongqing',g:'H3',title:'End of an Era',loc:'Chongqing, China',suit:'Smart Casual',bonus:false,targets:[{name:'Imogen Royce',alias:'ICA Facility Director',desc:'Runs the ICA\'s data processing facility beneath the rainy Chongqing streets.',methods:['Lure to Data Core','Drown in Puddle','Sniper','Fiber Wire in Server Room','Lethal Injection']},{name:'Hector Delgado',alias:'ICA Street Operative',desc:'Street-level ICA contact managing Chongqing\'s network from the laundromat district.',methods:['Poison Bao Bun','Lure to Rooftop','Fiber Wire','Explosive','Sniper']}],stories:[{n:'End of an Era',d:'Infiltrate the ICA facility using a stolen researcher keycard.'},{n:'Impulse Control',d:'Enrol in the ICA\'s experimental behavioural programme for direct facility access.'}],starts:['Laundromat Street','ICA Facility Gate','Rooftop (Mastery 3)','Restaurant District (Mastery 7)','ICA Research Wing (Mastery 10)'],mastery:[{l:5,n:'ICA Micro SMG',t:'SMG'},{l:7,n:'Chongqing Casual Suit',t:'Suit'},{l:10,n:'Chongqing Shortcut Door',t:'Shortcut'},{l:15,n:'ICA Proximity Explosive Mk II',t:'Explosive'},{l:20,n:'Druzhina 34 ICA Sniper',t:'Sniper'}],escalations:[{n:'The Chongqing Confiscation',lvl:3,unlock:'ICA Micro SMG (Early)',icon:'🔫'},{n:'The Dye Job',lvl:3,unlock:'ICA Proximity Explosive Mk II (Early)',icon:'💣'},{n:'The Neon Noir',lvl:3,unlock:'Chongqing Shortcut (Early)',icon:'🔓'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Street market noodle stall (2 locations)','ICA facility break room','Restricted research wing cafeteria']},{item:'Lethal Poison Pill',cat:'pill',locs:['ICA research wing office shelf','Delgado\'s contact apartment (street level)','Street clinic shelf (near laundromat)']},{item:'Lethal Poison Vial',cat:'lethal',locs:['ICA medical bay (deep restricted)','Maintenance tunnel supply box']}],Sniper:[{item:'Sniper Vantage Points',cat:'vantage',locs:["Rooftop directly opposite Hector's position",'ICA facility upper access (for Royce)','Neon-lit rooftop over street market']}]},tips:['Royce\'s puddle drown: lure her to the data core drainage area — bizarre, SA-rated, satisfying.','Hector\'s bao bun: poison the stall before he orders. Quick and clean.','ICA server rooms offer isolated fiber wire opportunities throughout.','SASO: Rooftop → snipe Hector → enter ICA facility → drown Royce in drainage area.']},
+
+{id:'mendoza',g:'H3',title:'The Farewell',loc:'Mendoza, Argentina',suit:'Smart Casual',bonus:false,targets:[{name:'Don Archibald Yates',alias:'Providence Partner',desc:'Argentine lawyer and trusted Providence legal partner. Hosting the vineyard farewell.',methods:['Poison Wine Barrel','Lure to Wine Cellar','Grape Crusher','Sniper','Explosive','Fiber Wire']},{name:'Tamara Vidal',alias:'Providence Monitor',desc:"Providence's internal security and monitoring director. Cold and extremely dangerous.",methods:['Lure to Private Tasting Room','Poison','Fiber Wire','Sniper','Garrote']}],stories:[{n:'Closing Statement',d:'Obtain VIP credentials for the farewell party to approach both targets.'},{n:'Full Bloom',d:'Infiltrate via vineyard worker entrance and blend in with event staff.'},{n:'Last Tango in Mendoza',d:'Use the tango competition as cover to isolate Tamara.'}],starts:['Vineyard Entrance','Winery Loading Dock','Villa Terrace','Private Wine Cellar (Mastery 5)','Tango Floor (Mastery 10)'],mastery:[{l:5,n:'Lockpick Mk IV',t:'Tool'},{l:7,n:'ICA19 Silverballer Mk II',t:'Pistol'},{l:10,n:'Remote Micro Explosive',t:'Explosive'},{l:15,n:'Mendoza Shortcut Door',t:'Shortcut'},{l:20,n:'Mendoza Asado Suit',t:'Suit'}],escalations:[{n:'The Grapes of Wrath',lvl:3,unlock:'Mendoza Asado Suit (Early)',icon:'👔'},{n:'The Balcony Protocol',lvl:3,unlock:'Remote Micro Explosive (Early)',icon:'💣'},{n:'The Vineyard Vendetta',lvl:3,unlock:'ICA19 Silverballer Mk II (Early)',icon:'🔫'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['GF Vineyard catering kitchen','Winery processing area break room','Outdoor event bar preparation']},{item:'Lethal Poison Pill',cat:'pill',locs:["Yates's private cellar side table",'Vidal\'s reception holding room shelf','Villa bedroom drawer (restricted)']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Winery 2F wine analysis lab','Staff quarters supply room']}],Push:[{item:'Grape Crusher Platform',cat:'unique',locs:["Yates's inspection route passes the crusher — push him in during the walk",'Vineyard cliff edge (accidental fall, SA rated)']}]},tips:['Grape crusher inspection: predictable timer. Stand at the rim and wait.','Vidal\'s private tasting room: the cleanest isolated fiber wire kill in H3.','SASO: Staff disguise → poison Yates wine barrel → fiber wire Vidal in tasting room.']},
+
+{id:'carpathian',g:'H3',title:'Untouchable',loc:'Carpathian Mountains, Romania',suit:'Tactical Suit',bonus:false,targets:[{name:'Arthur Edwards (The Constant)',alias:'Providence Constant',desc:'Head of Providence operations. Captured at Mendoza, transported on a moving train.',methods:['Inject Serum','Push from Train','Lethal Syringe','Shoot','Explosive']}],stories:[{n:'Untouchable',d:'Fight through the moving train car by car to reach Edwards at the front.'}],starts:['Rear Carriage (only start)'],mastery:[{l:5,n:'Combat Knife',t:'Melee'},{l:10,n:'ICA SMG Tactical',t:'SMG'},{l:15,n:'Carpathian Mountain Suit',t:'Suit'},{l:20,n:'Tactical Turtleneck',t:'Suit'}],escalations:[{n:'The Carpathian Chronicles',lvl:3,unlock:'Tactical Turtleneck (Early)',icon:'👔'}],spawns:{Poison:[{item:'Lethal Syringe',cat:'lethal',locs:['Midway Train medical car','Car 4 guard equipment locker']}],Explosive:[{item:'Grenade / Explosive',cat:'explosive',locs:['Cargo car crates (multiple)','Cars 3 and 5 guard equipment boxes','Car 6 weapons storage']}]},tips:['Entirely linear — fight car by car. No disguise system: everyone is hostile.','The memory-wipe serum is the narrative "good" ending — counts as elimination either way.','Throw Edwards from the train for the most satisfying conclusion to the trilogy.','Every car has environmental kills — lean into it.']},
+
+{id:'ambrose',g:'H3',title:'Shadows in the Water',loc:'Ambrose Island, Andaman Sea',suit:'Smart Casual',bonus:true,targets:[{name:'Sinhi "Akka" Ventham',alias:'Guerrilla Leader',desc:'Charismatic guerrilla commander running a criminal operation from the island.',methods:['Lure to Ritual Site','Explosive','Sniper','Fiber Wire in War Tent','Push from Cliff']},{name:'Noel Crest',alias:'International Smuggler',desc:'Black market smuggler. His boat is moored in the harbor.',methods:['Sabotage Boat Engine','Explosive','Sniper','Fiber Wire','Lethal Injection']}],stories:[{n:'Shadows in the Water',d:'Infiltrate via the beach and navigate the guerrilla camp.'},{n:'The Ritual',d:"Exploit the islanders' ceremony to isolate Akka at a vulnerable moment."}],starts:['Beach Cove','Harbor Dock','Jungle Path (Mastery 3)','Guerrilla Camp (Mastery 7)'],mastery:[{l:5,n:'Krugermeier 2-2 Black',t:'Pistol'},{l:7,n:'Tactical Knife Mk II',t:'Melee'},{l:10,n:'Ambrose Jungle Suit',t:'Suit'},{l:15,n:'Sieger 300 Ghost (Ambrose)',t:'Sniper'},{l:20,n:'ICA Proximity Explosive Mk III',t:'Explosive'}],escalations:[{n:'The Ambrose Ambush',lvl:3,unlock:'Sieger 300 Ghost (Ambrose)',icon:'🎯'},{n:'The Andaman Ascent',lvl:3,unlock:'ICA Proximity Explosive Mk III',icon:'💣'}],spawns:{Poison:[{item:'Emetic Rat Poison',cat:'emetic',locs:['Village cooking fire area','Guerrilla mess hall table','Harbor cantina shelf']},{item:'Lethal Poison Pill',cat:'pill',locs:["Akka's command tent table",'Harbor office shelf','Field medical kit (jungle path)']},{item:'Lethal Poison Vial',cat:'lethal',locs:['Rebel armory storage (restricted)','Medical tent near beach']}]},tips:["Akka's ritual: isolated from guards for ~4 in-game minutes. Best kill window.",'Crest\'s boat engine sabotage before he boards = clean environmental kill.','Guerrilla disguise is essential — basically a free pass for the entire camp.','SASO: Beach → guerrilla disguise → ritual kill Akka → harbor → boat sabotage.']}
+];
+
+// ── ELUSIVE DATA ──────────────────────────────────────────────
+const ET=[
+{n:'The Undying',loc:'Miami',g:'H2',status:'react',celebrity:true,actor:'Sean Bean',desc:'Mark Faba — professional death-faker. Has survived assassinations, explosions, and falls. Most notorious mark in ICA history.',strategy:'He clocks you if close. Use the race PA distraction, then snipe from the grandstand. Or poison the Kronstadt mascot drink station he visits.',arcade:true},
+{n:'The Undying Returns',loc:'Miami',g:'H2',status:'react',celebrity:true,actor:'Sean Bean',desc:'Faba is back. Adjusted patrol after last encounter. More vigilant.',strategy:'New route — check near the Kronstadt display booth. Secondary guard added. Wait for the trade booth inspection window.',arcade:false},
+{n:'The Sensation',loc:'Paris',g:'H1',status:'react',desc:'William Yu, self-styled master of disguise. Dressed as various guests during the event.',strategy:'Identify by his overcorrected gait. Wait for his solo balcony visit.',arcade:false},
+{n:'The Extractor',loc:'Sapienza',g:'H1',status:'inactive',desc:'Former MI6 operative selling secrets.',strategy:'Shadow his meeting. Wait for the church entrance alone window — very short.',arcade:false},
+{n:'The Twin',loc:'Sapienza',g:'H1',status:'react',desc:'One twin is the target, one is civilian. Identification is the challenge.',strategy:'Listen to their argument — the target says a specific phrase. Kill the one near the villa courtyard.',arcade:false},
+{n:'The Identity Thief',loc:'Marrakesh',g:'H1',status:'inactive',desc:'Identity thief using the protest chaos as cover.',strategy:'He makes two phone calls. Strike during the second call in the east souk alley.',arcade:false},
+{n:'The Guru',loc:'Marrakesh',g:'H1',status:'react',desc:'Spiritual advisor embedded with Zaydan\'s inner circle.',strategy:'Use the shaman disguise from the base mission — private meeting opportunity.',arcade:false},
+{n:'The Prince',loc:'Bangkok',g:'H1',status:'inactive',desc:'Royalty with a blood-soaked past. Staying in a private penthouse suite.',strategy:'He orders room service on a fixed schedule — poison the delivery tray beforehand.',arcade:false},
+{n:'The Broker',loc:'Bangkok',g:'H1',status:'react',desc:'Sells classified intel to multiple buyers simultaneously.',strategy:'He stands near the rooftop pool alone at one specific point — push, no witnesses.',arcade:false},
+{n:'The Serial Killer',loc:'Colorado',g:'H1',status:'react',desc:'Hiding within the militia compound.',strategy:'Isolates near the windmill at dusk. No guards patrol there — completely clean.',arcade:true},
+{n:'The Surgeons',loc:'Hokkaido',g:'H1',status:'inactive',desc:'Assassin-surgeon duo moonlighting through GAMA.',strategy:'Eastern surgeon first near the obs deck, then western one before shift change — tight timing.',arcade:false},
+{n:'The Food Critic',loc:'Sapienza',g:'H1',status:'react',desc:'Blackmailing Sapienza\'s chefs. Fixed tasting route through the piazza.',strategy:'Poison the dish he orders at the piazza restaurant — takes effect before he finishes.',arcade:false},
+{n:'The Forger',loc:'Paris',g:'H1',status:'inactive',desc:'Gary Lunn, master forger providing IAGO with fake identities.',strategy:'Ground floor route — steps outside for a phone call alone. Fiber wire from behind.',arcade:false},
+{n:'The Warlord',loc:'Mumbai',g:'H2',status:'react',desc:'Arms dealer using Mumbai slums as a transit hub.',strategy:'Visits the rooftop water tower alone at midday. Push or snipe from opposite building.',arcade:true},
+{n:'The Black Hat',loc:'Miami',g:'H2',status:'inactive',desc:'Hacker attempting to breach Kronstadt data systems.',strategy:'Leaves the tech suite once for a smoke break on the side deck. Isolated, no cameras.',arcade:false},
+{n:'The Gunrunner',loc:'Miami',g:'H2',status:'inactive',desc:'Black market weapons dealer at the race.',strategy:'Does a private circuit lap in a buggy — place an explosive on the road.',arcade:false},
+{n:'The Procureur',loc:'Whittleton Creek',g:'H2',status:'inactive',desc:'Arms dealer at the BBQ as a cover meeting.',strategy:'Contact leaves first — 30-second window behind the garage.',arcade:false},
+{n:'The Badboy',loc:'Isle of Sgàil',g:'H2',status:'react',desc:'Art vandal and fence for stolen Ark Society acquisitions.',strategy:'Smokes alone on the eastern ramparts. Easy fiber wire, zero witnesses.',arcade:true},
+{n:'The Shaman',loc:'Santa Fortuna',g:'H2',status:'react',desc:'Cult leader in the Colombian jungle.',strategy:'Ceremony circle clears at dusk. North path approach during the clearing.',arcade:true},
+{n:'The Liability',loc:'Whittleton Creek',g:'H2',status:'react',desc:"Cassidy's personal cleaner who knows too much.",strategy:'Alone in the house basement doing laundry. Most isolated ET position in the game.',arcade:true},
+{n:'The Appraiser',loc:'New York',g:'H2',status:'react',desc:'Art specialist authenticating stolen masterpieces through the bank.',strategy:'Bodyguard leaves her alone inside the vault — fiber wire freely.',arcade:true},
+{n:'The Collector',loc:'Dubai',g:'H3',status:'react',desc:'Acquisitions specialist who has stolen priceless artworks.',strategy:'Lingers alone at the art installation. Push from the level above.',arcade:true},
+{n:'The Heartbreaker',loc:'Dartmoor',g:'H3',status:'react',desc:'Con man posing as a grief counselor to rob the Carlisle estate.',strategy:'Intercept in the hallway between the library and the parlor.',arcade:true},
+{n:'The Iconoclast',loc:'Berlin',g:'H3',status:'react',desc:'Eco-terrorist embedded in the club crowd.',strategy:'Identify by distinct jacket. Coin drop near the bathrooms — clean kill zone.',arcade:true},
+{n:'The Rage',loc:'Chongqing',g:'H3',status:'react',desc:'Fixer with a catastrophic reputation. Using Chongqing\'s anonymity.',strategy:'Visits the noodle stall twice. Poison both visits — he won\'t survive the second bowl.',arcade:true},
+{n:'The Politician',loc:'Mendoza',g:'H3',status:'react',desc:'Corrupt official laundering through the vineyard event.',strategy:'Visits the private cellar alone for reserved wine tasting. Fiber wire.',arcade:true},
+{n:'The Entertainer',loc:'Haven Island',g:'H3',status:'react',desc:'Performer who is a weapons courier using the celebration as cover.',strategy:'Sits alone at the bonfire after his act. Set a trip mine or explosive beforehand.',arcade:true},
+{n:'The Fugitive',loc:"Hawke's Bay",g:'H2',status:'react',desc:'Witness who needs to be permanently silenced.',strategy:'Linear beach path south end. Sits alone watching the ocean.',arcade:false},
+{n:'The Chameleon',loc:'Bangkok',g:'H1',status:'react',desc:'Changes outfits three times during the mission.',strategy:'Track by build not clothes. Always returns to the same chair between changes.',arcade:false},
+{n:'The Pharmacist',loc:'Hokkaido',g:'H1',status:'react',desc:'Illegal pharmaceutical broker disguised as a patient.',strategy:'Private mountain trail walk. Sabotage the bridge railing section beforehand.',arcade:false}
+];
+const ARCADE_DETAIL=[
+{n:'The Undying',loc:'Miami',g:'H2',actor:'Sean Bean',levels:[{lv:1,comps:'Standard ET rules — one attempt, no checkpoint',unlock:'Mark Faba "Pale Duck" Suit'},{lv:2,comps:'Bodies Cannot Be Found, No Disguise Change',unlock:'ICA19 Silverballer (Arcade)'},{lv:3,comps:'No Disguise Change, Bodies Cannot Be Found, Timer: 15min',unlock:'Miami Elusive Suit'}]},
+{n:'The Serial Killer',loc:'Colorado',g:'H1',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Weapons Brought In, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Suit Only, No Bodies Found, No Knockouts',unlock:'Colorado Elusive Suit'}]},
+{n:'The Warlord',loc:'Mumbai',g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Headshots Only, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Suit Only, Headshots Only, Timer: 12min',unlock:'Mumbai Elusive Suit'}]},
+{n:'The Collector',loc:'Dubai',g:'H3',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Pacifications, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Suit Only, Accident Only, No Bodies Found',unlock:'Dubai Elusive Suit'}]},
+{n:'The Heartbreaker',loc:'Dartmoor',g:'H3',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Firearms, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Suit Only, No Firearms, No Bodies Found, Timer: 18min',unlock:'Dartmoor Elusive Suit'}]},
+{n:'The Iconoclast',loc:'Berlin',g:'H3',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Specific Kill Method Required, No Bodies Found',unlock:''},{lv:3,comps:'Specific Kill Method, Suit Only, Bodies Cannot Be Found',unlock:'Berlin Elusive Suit'}]},
+{n:'The Rage',loc:'Chongqing',g:'H3',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Poison Only, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Poison Only, Suit Only, No Bodies Found, Timer: 10min',unlock:'Chongqing Elusive Suit'}]},
+{n:'The Politician',loc:'Mendoza',g:'H3',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Bodies Found, Specific Disguise Required',unlock:''},{lv:3,comps:'Suit Only, Accident Kill Only, No Bodies Found',unlock:'Mendoza Elusive Suit'}]},
+{n:'The Liability',loc:'Whittleton Creek',g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Bodies Cannot Be Found, No Knockout Devices',unlock:''},{lv:3,comps:'Suit Only, No Knockouts, Bodies Cannot Be Found',unlock:'Whittleton Elusive Suit'}]},
+{n:'The Appraiser',loc:'New York',g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Firearms, Bodies Cannot Be Found',unlock:''},{lv:3,comps:'Suit Only, Melee/Accident Only, Timer: 14min',unlock:'New York Elusive Suit'}]},
+{n:'The Badboy',loc:"Isle of Sgàil",g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'No Bodies Found, Specific Disguise Required',unlock:''},{lv:3,comps:'Suit Only, Fiber Wire Only, No Bodies Found',unlock:"Sgàil Elusive Suit"}]},
+{n:'The Shaman',loc:'Santa Fortuna',g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Bodies Cannot Be Found, No Brought Weapons',unlock:''},{lv:3,comps:'Suit Only, No Brought Weapons, Bodies Cannot Be Found',unlock:'Santa Fortuna Elusive Suit'}]},
+{n:'The Entertainer',loc:'Haven Island',g:'H2',actor:null,levels:[{lv:1,comps:'Standard rules',unlock:''},{lv:2,comps:'Specific Kill Method, No Bodies Found',unlock:''},{lv:3,comps:'Explosion Kill Required, Suit Only, Timer: 12min',unlock:'Haven Island Elusive Suit'}]}
+];
+
+const TACTICS=[
+{title:'Silent Assassin (SA) Rules',tips:['SA = not spotted, no non-target kills, no bodies found, no illegal items visible.','Fiber wire and lethal poison leave no trace if the body is hidden in a container.','Bodies must be in containers (dumpster, wardrobe, chest) — isolated spots do not count.','One non-target KO is tolerated if the body is immediately hidden.','Cameras: avoid, shoot the red light, or erase via a security terminal.','Explosion kills are SA if only the target dies and no one saw you place it.','Accident kills (push, chandelier, gas) are SA-safe even if witnessed — never flagged as suspicious.','If a guard finds a body before you hide it, SA is broken — always prioritise moving bodies.']},
+{title:'Suit Only (SA/SO)',tips:['Suit Only = complete the mission in your starting suit with no other disguise worn.','SA/SO unlocks the highest-tier rewards at each location.','Coins are critical for SO — distract and direct targets without a story cover.','Emetic poison + bathroom = safe isolation anywhere, no cover story required.','Never pick up illegal items without immediate cause — guards react to visibility.','Eliminate most-guarded targets last, easiest first.','The Kruger disguise in Paris is NOT your suit — cannot use it for SO.','Berlin SA/SO: only 5 of 8 agents required — pick the isolated ones (tunnels, biker area).']},
+{title:'Mastery & XP Grinding',tips:['Mastery is per-location — grind every map to 20 for all unlock tiers.','Challenge XP is the fastest levelling method — complete all available challenges each run.','Each mission has 30–60 unique challenges — explore every kill method and story.','Versatile Assassin feats require different methods on each target in the same run.','Complete all mission stories for significant XP — usually 1,000–2,000 XP each.','Mastery 20 rewards the signature weapon or exclusive suit for that location.','Escalations award bonus items not available through standard mastery.']},
+{title:'Freelancer Mode',tips:['Freelancer is roguelike — death in a campaign restarts that campaign.','Safehouse and stash persist permanently.','Complete all 4 campaign objectives for the Prestige unlock at the end.','Default loadout: silenced pistol, fiber wire, emetic poison, lockpick, coins × 3.','Smuggle items via stash points — spend merces to unlock additional stash slots.','Never get greedy. A slow, patient run beats a fast death every time.','Campaign targets are hidden among NPCs — observe behaviour, use instinct.','Kukri knife is among the best melee weapons — throwable, one-shot, silent.','Complete Prestige challenges for exclusive Freelancer suit cosmetics.']},
+{title:'Elusive Target Strategy',tips:['One attempt only. Scout the level in a standard mission first.','Do NOT start until you have a complete plan including your exit route.','Pause mid-mission to plan each step before executing.','Reactivations allow a second attempt — learn from the first.','Completing 5 ETs unlocks the first Legacy Suit. Then every 5: 10, 15, 20, 25.','No mission stories — you are completely on your own.','If compromised before the kill, abort — SA is kept if you restart without exiting.']},
+{title:'ET Arcade Guide',tips:['Arcade gives permanent access to select ETs with 3 escalating difficulty levels.','Level 1 = standard ET experience. Learn the target here.','Level 2 adds complications: no disguise change, no bodies found, etc.','Level 3 = full SA/SO challenge with timers and kill method restrictions.','Complete Level 3 of each Arcade ET for exclusive location elusive suit cosmetics.','The Undying (Sean Bean) Arcade remains the most iconic — 3 levels of terror.','Unlike standard ETs, Arcade can be retried — learn from each failure freely.']},
+{title:'Loadout Builds',tips:['All-Purpose: Silenced ICA19, Fiber Wire, Emetic Poison, Lockpick, Coins × 3.','SA/SO Specialist: ICA19 Silverballer, Fiber Wire, Lethal Syringe, Lockpick, Coins × 5.','Sniper Build: Sieger 300 Ghost (briefcase), ICA19, Lethal Poison, Lockpick, Coins.','Explosive Chaos: Remote Explosive, Proximity Explosive, Emetic Poison, Crowbar.','Freelancer: Kalmer Tranq, Fiber Wire, Emetic Poison, ICA Electrocution Phone.','ICA Electrocution Phone = one of the most versatile items. Kills via a phone call.','Emetic Poison over Lethal for SA/SO — safely isolate targets before striking.','Briefcase to conceal a large weapon through checkpoints without suspicion.','Always bring coins — the most versatile distraction tool in every situation.']}
+];
+
+// ── STATE ─────────────────────────────────────────────────────
+let curGame='H1',curDet=null,curETab='live',dbFil='ALL',searchIdx=[];
+let deferredInstall=null;
+
+// ── PWA / INSTALL ─────────────────────────────────────────────
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredInstall=e;
+  if(!localStorage.getItem('ica_install_dismissed'))
+    document.getElementById('install-banner').classList.remove('hidden');
+});
+window.addEventListener('appinstalled',()=>document.getElementById('install-banner').classList.add('hidden'));
+document.getElementById('install-btn').addEventListener('click',()=>{
+  if(deferredInstall){deferredInstall.prompt();deferredInstall=null;document.getElementById('install-banner').classList.add('hidden');}
+});
+function dismissBanner(){localStorage.setItem('ica_install_dismissed','1');document.getElementById('install-banner').classList.add('hidden');}
+
+// Detect iOS standalone prompt
+function checkIOSPrompt(){
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone=window.navigator.standalone===true;
+  const dismissed=localStorage.getItem('ica_install_dismissed');
+  if(isIOS&&!isStandalone&&!dismissed&&!deferredInstall){
+    const b=document.getElementById('install-banner');
+    b.querySelector('.ib-text').innerHTML='<b>Install as iPhone App</b><br>Tap Share → "Add to Home Screen"';
+    document.getElementById('install-btn').style.display='none';
+    b.classList.remove('hidden');
+  }
+}
+
+// ── SEARCH INDEX ──────────────────────────────────────────────
+function buildIndex(){
+  searchIdx=[];
+  M.forEach(m=>{
+    searchIdx.push({type:'mission',name:m.title,sub:m.loc+' · '+m.g,detail:'',mId:m.id,tab:null});
+    m.mastery.forEach(u=>{
+      searchIdx.push({type:'unlock',name:u.n,sub:'Mastery '+u.l+' · '+m.title+' · '+m.loc,detail:u.t+' — Mastery Level '+u.l,mId:m.id,tab:3,tag:'mastery',tagLabel:'MASTERY '+u.l});
+    });
+    m.escalations.forEach(e=>{
+      // Parse multi-reward unlock string
+      e.unlock.split('+').map(s=>s.trim()).forEach(reward=>{
+        searchIdx.push({type:'escunlock',name:reward,sub:'Complete: '+e.n+' · '+m.title+' · '+m.loc,detail:e.lvl+'-level escalation',mId:m.id,tab:3,tag:'escalation',tagLabel:e.lvl+'LVL ESCALATION'});
+      });
+    });
+    m.targets.forEach(t=>{
+      searchIdx.push({type:'target',name:t.name,sub:t.alias+' · '+m.title+' · '+m.loc+' · '+m.g,detail:t.desc,mId:m.id,tab:0});
+    });
+  });
+  ET.forEach(e=>{
+    searchIdx.push({type:'elusive',name:e.n,sub:e.loc+' · '+e.g+(e.celebrity?' · ★ '+e.actor:''),detail:e.desc,mId:null,tab:null});
+  });
+  TACTICS.forEach((t,i)=>{
+    searchIdx.push({type:'tactic',name:t.title,sub:'Tactics Guide',detail:'',mId:null,tab:null,tacIdx:i});
+  });
+}
+
+function openSearch(){
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('so-input').focus(),100);
+}
+function closeSearch(){
+  document.getElementById('search-overlay').classList.remove('open');
+  document.getElementById('so-input').value='';
+  document.getElementById('so-results').innerHTML=buildHints();
+}
+function buildHints(){
+  const hints=[['Silverballer','Find the unlock location'],['Paris','Browse mission + all unlocks'],['Electrocution Phone','How to unlock it'],['Sean Bean','Find elusive target info'],['Sieger 300','All sniper unlock sources']];
+  return`<div class="so-hint">${hints.map(h=>`<div class="so-hint-row"><span class="so-hint-key">${h[0]}</span><span class="so-hint-val">${h[1]}</span></div>`).join('')}</div>`;
+}
+function runSearch(){
+  const q=document.getElementById('so-input').value.trim().toLowerCase();
+  if(!q){document.getElementById('so-results').innerHTML=buildHints();return;}
+  const res=searchIdx.filter(x=>{
+    const hay=(x.name+' '+x.sub+' '+x.detail).toLowerCase();
+    return hay.includes(q);
+  });
+  if(!res.length){document.getElementById('so-results').innerHTML=`<div class="so-empty">Nothing found for "${q}"<br><br>Try an item name, mission, location,<br>or target alias</div>`;return;}
+
+  // Group results
+  const groups={unlock:[],escunlock:[],mission:[],target:[],elusive:[],tactic:[]};
+  res.slice(0,40).forEach(r=>{ if(groups[r.type])groups[r.type].push(r); });
+  const icons={unlock:'🔓',escunlock:'🎮',mission:'🗺',target:'🎯',elusive:'👤',tactic:'📋'};
+  const labels={unlock:'MASTERY UNLOCKS',escunlock:'ESCALATION UNLOCKS',mission:'MISSIONS',target:'TARGETS',elusive:'ELUSIVE TARGETS',tactic:'TACTICS'};
+  let html='';
+  for(const type of ['unlock','escunlock','mission','target','elusive','tactic']){
+    const items=groups[type];
+    if(!items.length)continue;
+    html+=`<div class="so-group-label">${labels[type]} (${items.length})</div>`;
+    html+=items.map(r=>`<div class="so-item" onclick="handleSearchResult('${r.type}','${r.mId||''}',${r.tab!=null?r.tab:'null'},${r.tacIdx!=null?r.tacIdx:-1})">
+      <div class="so-icon ${r.type}">${icons[r.type]}</div>
+      <div class="so-text">
+        <div class="so-name">${r.name}</div>
+        <div class="so-sub">${r.sub}</div>
+        ${r.tag?`<span class="so-tag ${r.tag}">${r.tagLabel}</span>`:''}
+      </div>
+    </div>`).join('');
+  }
+  document.getElementById('so-results').innerHTML=html;
+}
+function handleSearchResult(type,mId,tab,tacIdx){
+  closeSearch();
+  if(type==='tactic'&&tacIdx>=0){setView('tac',document.querySelectorAll('.nb')[3]);return;}
+  if(type==='elusive'){setView('elusive',document.querySelectorAll('.nb')[1]);return;}
+  if(!mId)return;
+  openDet(mId);
+  if(tab!=null){
+    setTimeout(()=>{
+      const tabs=document.querySelectorAll('.det-tab');
+      if(tabs[tab])setDTab(tab,tabs[tab]);
+    },350);
+  }
+}
+
+// ── VIEWS ────────────────────────────────────────────────────
+function setView(v,btn){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('on'));
+  document.getElementById('view-'+v).classList.add('on');
+  btn.classList.add('on');
+}
+function setGame(g,el){
+  curGame=g;
+  document.querySelectorAll('.gtab').forEach((t,i)=>t.classList.toggle('on',['H1','H2','H3'][i]===g));
+  renderMissions();
+}
+
+// ── MISSIONS ─────────────────────────────────────────────────
+function renderMissions(){
+  const missions=M.filter(m=>m.g===curGame);
+  const main=missions.filter(m=>!m.bonus),bonus=missions.filter(m=>m.bonus);
+  let html='';
+  if(main.length)html+=main.map(mCard).join('');
+  if(bonus.length)html+=`<div style="font-family:var(--M);font-size:9px;color:var(--r);letter-spacing:2px;padding:10px 4px 4px">BONUS MISSIONS</div>`+bonus.map(mCard).join('');
+  document.getElementById('mc-list').innerHTML=html||'<div class="empty">No missions</div>';
+}
+function mCard(m){
+  const comp=getComp(m.id);
+  const badges=(comp.sa?`<span class="cb sa">SA</span>`:'')+(comp.so?`<span class="cb so">SO</span>`:'')+(comp.saso?`<span class="cb saso">SA/SO</span>`:'');
+  return`<div class="mc" onclick="openDet('${m.id}')">
+    <div class="mc-bar"></div>
+    ${badges?`<div class="mc-badges">${badges}</div>`:''}
+    <div class="mc-in">
+      <div class="mc-loc">${m.loc}</div>
+      <div class="mc-title">${m.title}</div>
+      <div class="mc-chips">${m.targets.map(t=>`<span class="chip ${m.bonus?'bonus':''}">${t.name}</span>`).join('')}</div>
+      <div class="mc-foot">
+        <span class="mc-sub">${m.g} · ${m.targets.length} TARGET${m.targets.length>1?'S':''} · ${m.escalations.length} ESC</span>
+        <span class="mc-arr">›</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── DETAIL ───────────────────────────────────────────────────
+function openDet(id){
+  curDet=M.find(x=>x.id===id);
+  if(!curDet)return;
+  document.getElementById('d-loc').textContent=curDet.loc.toUpperCase();
+  document.getElementById('d-title').textContent=curDet.title;
+  document.querySelectorAll('.det-tab').forEach((t,i)=>t.classList.toggle('on',i===0));
+  document.querySelectorAll('.det-pane').forEach((p,i)=>p.classList.toggle('on',i===0));
+  buildDet(curDet);
+  document.getElementById('det').classList.add('open');
+  document.getElementById('det').scrollTop=0;
+}
+function closeDet(){document.getElementById('det').classList.remove('open');}
+function setDTab(i,el){
+  document.querySelectorAll('.det-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.det-pane').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('dp-'+i).classList.add('on');
+}
+function buildDet(m){
+  // Pane 0: Targets + optional agents
+  let p0=`<div class="sl">Targets</div>`+
+    m.targets.map(t=>`<div class="tc"><div class="tc-top">
+      <div class="tc-code">${t.alias}</div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-desc">${t.desc}</div>
+      <div class="tc-methods">${t.methods.map(mth=>`<span class="mt ${mCat(mth)}" onclick="showSpawn('${mth}','${m.id}')">${mth}</span>`).join('')}</div>
+    </div></div>`).join('')+
+    `<div style="font-family:var(--M);font-size:9px;color:var(--t3);text-align:center;padding:6px 0;letter-spacing:1px">TAP A METHOD TAG TO SEE SPAWN LOCATIONS</div>`;
+  if(m.agents){
+    p0+=`<div class="sl" style="margin-top:10px">Berlin Agent Roster</div>`+
+    m.agents.map((a,i)=>`<div class="agent-card">
+      <div class="agent-num">#${i+1}</div>
+      <div class="agent-info">
+        <div class="agent-name">${a.n}</div>
+        <div class="agent-disguise">${a.d}</div>
+        <div class="agent-loc">${a.l}</div>
+      </div>
+    </div>`).join('');
+  }
+  document.getElementById('dp-0').innerHTML=p0;
+
+  // Pane 1: Stories
+  document.getElementById('dp-1').innerHTML=`<div class="sl">Mission Stories</div>`+m.stories.map(s=>`<div class="si"><div class="si-n">${s.n}</div><div class="si-d">${s.d}</div></div>`).join('');
+
+  // Pane 2: Starts
+  document.getElementById('dp-2').innerHTML=`<div class="sl">Starting Locations</div><div class="start-wrap">${m.starts.map(s=>{const ms=s.match(/Mastery (\d+)/);return`<span class="sc ${ms?'locked':''}">${s}</span>`;}).join('')}</div><div style="margin-top:12px"><div class="sl">Default Suit</div><div style="font-family:var(--M);font-size:11px;color:var(--t2)">${m.suit}</div></div>`;
+
+  // Pane 3: Unlocks
+  document.getElementById('dp-3').innerHTML=
+    `<div class="sl">Mastery Unlocks</div><div class="ul-grid">${m.mastery.map(u=>`<div class="ui"><div class="ui-lvl">LV ${u.l}</div><div class="ui-name">${u.n}</div><div class="ui-type">${u.t}</div></div>`).join('')}</div>`+
+    (m.escalations.length?`<div class="sl" style="margin-top:14px">Escalation Unlocks</div>`+m.escalations.map(e=>`<div class="esc"><div class="esc-head"><div class="esc-name">${e.n}</div><div class="esc-levels">${Array.from({length:e.lvl}).map(()=>`<div class="esc-lv"></div>`).join('')}</div></div><div class="esc-body"><div class="esc-icon">${e.icon}</div><div class="esc-reward">Unlock: <b>${e.unlock}</b></div></div></div>`).join(''):'');
+
+  // Pane 4: Tips
+  document.getElementById('dp-4').innerHTML=`<div class="sl">Agent Tips</div>`+m.tips.map(t=>`<div class="tip">${t}</div>`).join('');
+
+  // Pane 5: Progress
+  buildProgress(m);
+}
+function buildProgress(m){
+  const comp=getComp(m.id);
+  const pane=document.getElementById('dp-5');
+  pane.innerHTML=`<div class="prog-mission">
+    <div class="prog-title">${m.title}</div>
+    <div class="sl">Completion</div>
+    <div class="prog-badges">
+      <div class="prog-badge ${comp.sa?'achieved':''}" onclick="toggleComp('${m.id}','sa')"><span class="pb-icon">🎯</span><span class="pb-label">SA</span></div>
+      <div class="prog-badge ${comp.so?'achieved':''}" onclick="toggleComp('${m.id}','so')"><span class="pb-icon">🎽</span><span class="pb-label">SO</span></div>
+      <div class="prog-badge ${comp.saso?'achieved':''}" onclick="toggleComp('${m.id}','saso')"><span class="pb-icon">⭐</span><span class="pb-label">SA/SO</span></div>
+    </div>
+    <div class="sl">Mastery Level</div>
+    <div class="prog-mastery-row">
+      <div class="prog-mastery-bar"><div class="prog-mastery-fill" style="width:${(comp.mastery/20)*100}%"></div></div>
+      <div class="prog-mastery-val">${comp.mastery}/20</div>
+      <div class="prog-mastery-btns">
+        <button class="pmb" onclick="adjMastery('${m.id}',-1)">−</button>
+        <button class="pmb" onclick="adjMastery('${m.id}',1)">+</button>
+      </div>
+    </div>
+    <div class="prog-notes-label">PERSONAL NOTES</div>
+    <textarea class="prog-notes" id="prog-notes-${m.id}" placeholder="Your run notes, strategies, reminders...">${comp.notes||''}</textarea>
+    <button class="prog-save" onclick="saveNotes('${m.id}')">SAVE NOTES</button>
+  </div>`;
+}
+
+// ── COMPLETION TRACKER ────────────────────────────────────────
+function getComp(id){try{return JSON.parse(localStorage.getItem('ica_c_'+id)||'{}')}catch(e){return{}}}
+function setComp(id,d){try{localStorage.setItem('ica_c_'+id,JSON.stringify(d))}catch(e){}}
+function toggleComp(id,key){
+  const c=getComp(id);c[key]=!c[key];setComp(id,c);
+  buildProgress(M.find(x=>x.id===id));
+  renderMissions();
+}
+function adjMastery(id,delta){
+  const c=getComp(id);c.mastery=Math.max(0,Math.min(20,(c.mastery||0)+delta));setComp(id,c);
+  buildProgress(M.find(x=>x.id===id));
+}
+function saveNotes(id){
+  const c=getComp(id);c.notes=document.getElementById('prog-notes-'+id).value;setComp(id,c);
+  const btn=document.querySelector('.prog-save');if(btn){btn.textContent='SAVED ✓';setTimeout(()=>{btn.textContent='SAVE NOTES'},1500);}
+}
+
+// ── SPAWN SHEET ───────────────────────────────────────────────
+function showSpawn(method,mId){
+  const m=M.find(x=>x.id===mId);if(!m||!m.spawns)return;
+  const spawnKeys=Object.keys(m.spawns);
+  let key=spawnKeys.find(k=>method.toLowerCase().includes(k.toLowerCase())||k.toLowerCase().includes(method.split(' ')[0].toLowerCase()));
+  if(!key)for(const k of spawnKeys)if(method.toLowerCase().split(' ').some(w=>k.toLowerCase().includes(w))){key=k;break;}
+  document.getElementById('ss-title').textContent=method;
+  document.getElementById('ss-sub').textContent=m.title.toUpperCase()+' · '+m.loc.toUpperCase();
+  if(!key||!m.spawns[key]){
+    document.getElementById('ss-body').innerHTML=`<div class="ss-none">No mapped spawn locations for this method on ${m.title}.<br><br>This item may need to be brought via your loadout, or is only available through a specific story trigger or escalation.</div>`;
+  } else {
+    let html='';
+    for(const sp of m.spawns[key]){
+      html+=`<div class="sp-group"><div class="sp-item-name"><div class="sp-dot ${sp.cat}"></div><span style="color:var(--t);letter-spacing:.5px">${sp.item}</span></div>
+        ${sp.locs.map(l=>{const flr=l.match(/^([A-Z0-9]+[F\d]) /);return`<div class="sp-loc"><span class="sp-floor">${flr?flr[1]:''}</span><span>${flr?l.slice(flr[0].length):l}</span></div>`;}).join('')}
+      </div>`;
+    }
+    document.getElementById('ss-body').innerHTML=html;
+  }
+  document.getElementById('spawn-bg').classList.add('open');
+  document.getElementById('spawn-sheet').classList.add('open');
+}
+function closeSpawn(){document.getElementById('spawn-bg').classList.remove('open');document.getElementById('spawn-sheet').classList.remove('open');}
+
+// ── ELUSIVE ──────────────────────────────────────────────────
+function setETab(tab,el){
+  curETab=tab;
+  document.querySelectorAll('.et-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.et-pane').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');document.getElementById('etp-'+tab).classList.add('on');
+}
+function renderET(){
+  const live=ET.filter(e=>e.status==='react'),inactive=ET.filter(e=>e.status==='inactive');
+  document.getElementById('etp-live').innerHTML=live.map(renderETC).join('')||'<div class="empty">No active targets</div>';
+  document.getElementById('etp-inactive').innerHTML=inactive.map(renderETC).join('')||'<div class="empty">No inactive targets</div>';
+}
+function renderETC(e){
+  const bc=e.status==='live'||e.status==='react'?'react':'inactive';
+  return`<div class="etc" onclick="toggleETC(this)">
+    <div class="etc-bar ${bc}"></div>
+    <div class="etc-body">
+      <div class="etc-row1">
+        <div class="etc-name">${e.n}</div>
+        <div class="etc-badges">
+          ${e.celebrity?`<span class="etc-badge celeb">★ ${e.actor}</span>`:''}
+          <span class="etc-badge ${bc}">${e.status.toUpperCase()}</span>
+          ${e.arcade?'<span class="etc-badge arcade">ARCADE</span>':''}
+        </div>
+      </div>
+      <div class="etc-row2"><span class="etc-loc">${e.loc} · ${e.g}</span></div>
+      <div class="etc-detail">
+        <div class="etc-desc">${e.desc}</div>
+        <div class="etc-strat-label">STRATEGY</div>
+        <div class="etc-strat">${e.strategy}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function toggleETC(card){card.querySelector('.etc-detail').classList.toggle('open');}
+function renderArcade(){
+  document.getElementById('etp-arcade').innerHTML=ARCADE_DETAIL.map(a=>`
+    <div class="etc" onclick="toggleETC(this)">
+      <div class="etc-bar arcade"></div>
+      <div class="etc-body">
+        <div class="etc-row1">
+          <div class="etc-name">${a.n}</div>
+          <div class="etc-badges">
+            ${a.actor?`<span class="etc-badge celeb">★ ${a.actor}</span>`:''}
+            <span class="etc-badge arcade">ARCADE</span>
+          </div>
+        </div>
+        <div class="etc-row2"><span class="etc-loc">${a.loc} · ${a.g}</span></div>
+        <div class="etc-detail">
+          <div class="arc-levels">${a.levels.map(lv=>`<div class="arc-lv">
+            <div class="arc-lv-hd"><span>LEVEL ${lv.lv}</span>${lv.unlock?`<span>${lv.unlock}</span>`:''}</div>
+            <div class="arc-lv-comps">${lv.comps}</div>
+          </div>`).join('')}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── DATABASE ─────────────────────────────────────────────────
+function renderDB(){
+  const fs=['ALL','H1','H2','H3'];
+  document.getElementById('dbf').innerHTML=fs.map(f=>`<span class="fc ${f==='ALL'?'on':''}" onclick="setDBF(this,'${f}')">${f}</span>`).join('');
+  filterDB();
+}
+function setDBF(el,f){dbFil=f;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('on'));el.classList.add('on');filterDB();}
+function filterDB(){
+  const q=(document.getElementById('dbi').value||'').toLowerCase();
+  const all=M.flatMap(m=>m.targets.map(t=>({...t,mission:m.title,loc:m.loc,game:m.g,mId:m.id})));
+  const filtered=all.filter(t=>(dbFil==='ALL'||t.game===dbFil)&&(!q||[t.name,t.alias,t.mission,t.loc].some(s=>s.toLowerCase().includes(q))));
+  const list=document.getElementById('dbl');
+  if(!filtered.length){list.innerHTML='<div class="empty">NO TARGETS FOUND</div>';return;}
+  list.innerHTML=filtered.map(t=>`<div class="dbi" onclick="openDet('${t.mId}')">
+    <div class="dbi-name">${t.name}</div>
+    <div class="dbi-sub">${t.alias} · ${t.mission} · ${t.loc}</div>
+    <div class="dbi-methods">${t.methods.slice(0,4).map(m=>`<span class="dbi-m">${m}</span>`).join('')}</div>
+  </div>`).join('');
+}
+
+// ── TACTICS ──────────────────────────────────────────────────
+function renderTac(){
+  document.getElementById('tac-list').innerHTML=TACTICS.map((t,i)=>`
+    <div class="tac-card">
+      <div class="tac-hd" onclick="togTac(this)"><span class="tac-ht">${t.title}</span><span class="tac-tog ${i===0?'open':''}">›</span></div>
+      <div class="tac-body ${i===0?'open':''}">${t.tips.map(tip=>`<div class="tip">${tip}</div>`).join('')}</div>
+    </div>`).join('');
+}
+function togTac(hd){const body=hd.nextElementSibling,tog=hd.querySelector('.tac-tog');body.classList.toggle('open');tog.classList.toggle('open',body.classList.contains('open'));}
+
+// ── GESTURES ─────────────────────────────────────────────────
+let tx=0,sy=0;
+const det=document.getElementById('det');
+det.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+det.addEventListener('touchend',e=>{if(e.changedTouches[0].clientX-tx>70&&tx<60)closeDet();},{passive:true});
+const ss=document.getElementById('spawn-sheet');
+ss.addEventListener('touchstart',e=>{sy=e.touches[0].clientY},{passive:true});
+ss.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-sy>60)closeSpawn();},{passive:true});
+
+// ── SUIT DATA ─────────────────────────────────────────────────
+const SUITS=[
+// DEFAULT — always available
+{id:'s1',name:'Signature Suit with Gloves',how:"47's iconic default suit — always available from the start",cat:'default',g:'ALL'},
+{id:'s2',name:'Classic Suit',how:'Default suit variant — always available',cat:'default',g:'ALL'},
+{id:'s3',name:'Smart Casual Suit',how:'Default suit for most Hitman 2 and 3 missions',cat:'default',g:'ALL'},
+{id:'s4',name:'Tuxedo with Gloves',how:'Default suit for Paris — The Showstopper',cat:'default',g:'H1'},
+{id:'s5',name:'Patient Gown (GAMA)',how:'Default suit for Hokkaido — Situs Inversus',cat:'default',g:'H1'},
+{id:'s6',name:'Wetsuit',how:"Default suit for Hawke's Bay — Nightcall",cat:'default',g:'H2'},
+{id:'s7',name:'Tactical Suit',how:'Default suit for Carpathian Mountains — Untouchable',cat:'default',g:'H3'},
+// MASTERY — H1
+{id:'s8',name:'Ninja Suit',how:'Hokkaido — Mastery Level 5',cat:'mastery',g:'H1'},
+{id:'s9',name:'Pale Rider Suit',how:'Hokkaido — Mastery Level 10',cat:'mastery',g:'H1'},
+{id:'s10',name:'CICADA Combat Suit',how:'Colorado — Mastery Level 10',cat:'mastery',g:'H1'},
+// MASTERY — H2
+{id:'s11',name:'Pale Rider Suit (NY Edition)',how:"Hawke's Bay — Mastery 15  ·  New York — Mastery 20",cat:'mastery',g:'H2'},
+{id:'s12',name:'Ark Society Ceremonial Robes',how:"Isle of Sgàil — Mastery Level 7",cat:'mastery',g:'H2'},
+{id:'s13',name:'ICA Casual Tourist Suit',how:'Haven Island — Mastery Level 10',cat:'mastery',g:'H2'},
+// MASTERY — H3
+{id:'s14',name:'Chongqing Casual Suit',how:'Chongqing — Mastery Level 7',cat:'mastery',g:'H3'},
+{id:'s15',name:'Berlin Casual Suit',how:'Berlin — Mastery Level 15',cat:'mastery',g:'H3'},
+{id:'s16',name:'Pale Rider Suit (Dartmoor Ed.)',how:'Dartmoor — Mastery Level 15',cat:'mastery',g:'H3'},
+{id:'s17',name:'Mendoza Asado Suit',how:'Mendoza — Mastery Level 20  ·  Also via The Grapes of Wrath escalation',cat:'mastery',g:'H3'},
+{id:'s18',name:'Carpathian Mountain Suit',how:'Carpathian Mountains — Mastery Level 15',cat:'mastery',g:'H3'},
+{id:'s19',name:'Tactical Turtleneck',how:'Carpathian Mountains — Mastery 20  ·  Also via The Carpathian Chronicles escalation',cat:'mastery',g:'H3'},
+{id:'s20',name:'Ambrose Jungle Suit',how:'Ambrose Island — Mastery Level 10',cat:'mastery',g:'H3'},
+// ELUSIVE TARGET MILESTONES
+{id:'s21',name:'The Blood Money Suit',how:'Complete 5 Elusive Targets — Hitman 1 (red tie, charcoal suit — a Blood Money tribute)',cat:'elusive',g:'H1'},
+{id:'s22',name:'The Absolution Suit',how:'Complete 10 Elusive Targets — Hitman 1 (dark grey, long collar — Absolution tribute)',cat:'elusive',g:'H1'},
+{id:'s23',name:'The Signature Suit (Legacy)',how:'Complete 15 Elusive Targets — Hitman 1 (47\'s iconic look, high-mastery reward)',cat:'elusive',g:'H1'},
+{id:'s24',name:'The Classic All-Black Suit',how:'Complete 20 Elusive Targets — Hitman 1',cat:'elusive',g:'H1'},
+{id:'s25',name:'The Winter Suit',how:'Complete 25 Elusive Targets — Hitman 1',cat:'elusive',g:'H1'},
+{id:'s26',name:'ICA Suit with Gloves (H2 ET)',how:'Complete Elusive Target milestones in Hitman 2 — awarded at 5 completions',cat:'elusive',g:'H2'},
+{id:'s27',name:'Casual Suit with Gloves (H2 ET)',how:'Complete Elusive Target milestones in Hitman 2 — awarded at 15 completions',cat:'elusive',g:'H2'},
+// ET ARCADE SUITS — one per location, earned at Arcade Level 3
+{id:'s28',name:'Miami Elusive Suit',how:'Complete The Undying — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s29',name:'Colorado Elusive Suit',how:'Complete The Serial Killer — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s30',name:'Mumbai Elusive Suit',how:'Complete The Warlord — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s31',name:'Dubai Elusive Suit',how:'Complete The Collector — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s32',name:'Dartmoor Elusive Suit',how:'Complete The Heartbreaker — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s33',name:'Berlin Elusive Suit',how:'Complete The Iconoclast — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s34',name:'Chongqing Elusive Suit',how:'Complete The Rage — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s35',name:'Mendoza Elusive Suit',how:'Complete The Politician — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s36',name:"Whittleton Creek Elusive Suit",how:'Complete The Liability — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s37',name:'New York Elusive Suit',how:'Complete The Appraiser — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s38',name:"Isle of Sgàil Elusive Suit",how:'Complete The Badboy — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s39',name:'Santa Fortuna Elusive Suit',how:'Complete The Shaman — ET Arcade Level 3',cat:'arcade',g:'H3'},
+{id:'s40',name:'Haven Island Elusive Suit',how:'Complete The Entertainer — ET Arcade Level 3',cat:'arcade',g:'H3'},
+// ESCALATION-SPECIFIC
+{id:'s41',name:'GAMA Staff Suit (Variant)',how:'Hokkaido — The Okuma Operative escalation completion',cat:'escalation',g:'H1'},
+{id:'s42',name:'Ninja Suit (Early Unlock)',how:'Hokkaido — The Tren Polare escalation (before reaching Mastery 5)',cat:'escalation',g:'H1'},
+// FREELANCER
+{id:'s43',name:'The Freelancer Suit',how:'Freelancer mode — complete Prestige challenge milestones in the safehouse',cat:'freelancer',g:'H3'},
+{id:'s44',name:'The Scarecrow Suit',how:'Freelancer mode — reach specific Prestige level threshold',cat:'freelancer',g:'H3'},
+// SPECIAL / LEGACY / DLC
+{id:'s45',name:'The Requiem Suit',how:'Legacy Pack / IOI Anniversary Pack / Blood Money Requiem DLC — add to account from store',cat:'special',g:'ALL'},
+{id:'s46',name:'The Summer Suave Suit',how:'GOTY Edition content / Legacy Pack — import via account or in-game store',cat:'special',g:'H1'},
+{id:'s47',name:'The Raven Suit',how:'Legacy content — imported from Hitman 1 into WOA via Legacy Pack',cat:'special',g:'H1'},
+{id:'s48',name:'The Cowboy Suit',how:'Seven Deadly Sins DLC — Greed chapter completion',cat:'special',g:'H3'},
+{id:'s49',name:'The Devil Suit',how:'Seven Deadly Sins DLC — Greed chapter (Agent 47 in red)',cat:'special',g:'H3'},
+{id:'s50',name:'The Undying Look (Mark Faba)',how:"ET Celebrity suit — unlocked via The Undying Arcade (Sean Bean's outfit)",cat:'special',g:'H2'}
+];
+
+let suitFil='ALL';
+function renderSuits(){
+  const cats=['ALL','DEFAULT','MASTERY','ELUSIVE','ARCADE','ESCALATION','FREELANCER','SPECIAL'];
+  document.getElementById('suit-filters').innerHTML=cats.map(c=>`<span class="fc ${c==='ALL'&&suitFil==='ALL'?'on':suitFil===c?'on':''}" onclick="setSuitFil(this,'${c}')">${c}</span>`).join('');
+  const filtered=suitFil==='ALL'?SUITS:SUITS.filter(s=>s.cat.toUpperCase()===suitFil);
+  const owned=filtered.filter(s=>localStorage.getItem('ica_suit_'+s.id)==='1').length;
+  const totalOwned=SUITS.filter(s=>localStorage.getItem('ica_suit_'+s.id)==='1').length;
+  // Stats
+  document.getElementById('suit-count-main').innerHTML=`${totalOwned} <span>/ ${SUITS.length} SUITS</span>`;
+  document.getElementById('suit-prog-fill').style.width=`${Math.round((totalOwned/SUITS.length)*100)}%`;
+  // Category breakdown
+  const catCounts={mastery:0,elusive:0,arcade:0,special:0};
+  SUITS.forEach(s=>{if(catCounts[s.cat]!==undefined&&localStorage.getItem('ica_suit_'+s.id)==='1')catCounts[s.cat]++;});
+  const catTotals={mastery:SUITS.filter(s=>s.cat==='mastery').length,elusive:SUITS.filter(s=>s.cat==='elusive').length,arcade:SUITS.filter(s=>s.cat==='arcade').length,special:SUITS.filter(s=>s.cat==='special').length};
+  document.getElementById('suit-count-cats').innerHTML=`<span class="scc"><b>${catCounts.mastery}/${catTotals.mastery}</b> MST</span><span class="scc"><b>${catCounts.elusive}/${catTotals.elusive}</b> ET</span><span class="scc"><b>${catCounts.arcade}/${catTotals.arcade}</b> ARC</span>`;
+  if(!filtered.length){document.getElementById('suit-list').innerHTML='<div class="empty">No suits in this category</div>';return;}
+  document.getElementById('suit-list').innerHTML=filtered.map(s=>{
+    const isOwned=localStorage.getItem('ica_suit_'+s.id)==='1';
+    const gameTag=s.g!=='ALL'?`<span class="stag default">${s.g}</span>`:'';
+    return`<div class="suit-item ${isOwned?'owned':''}" onclick="toggleSuit('${s.id}')">
+      <div class="suit-check"><span class="suit-tick">✓</span></div>
+      <div class="suit-info">
+        <div class="suit-name">${s.name}</div>
+        <div class="suit-how">${s.how}</div>
+        <div class="suit-tags">${gameTag}<span class="stag ${s.cat}">${s.cat.toUpperCase()}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function setSuitFil(el,f){
+  suitFil=f;
+  renderSuits();
+}
+function toggleSuit(id){
+  const cur=localStorage.getItem('ica_suit_'+id)==='1';
+  localStorage.setItem('ica_suit_'+id,cur?'0':'1');
+  renderSuits();
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function init(){
+  buildIndex();
+  renderMissions();
+  renderET();
+  renderArcade();
+  renderDB();
+  renderTac();
+  renderSuits();
+  document.getElementById('so-results').innerHTML=buildHints();
+  checkIOSPrompt();
+}
+init();
+</script>
+</body>
+</html>
